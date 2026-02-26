@@ -85,6 +85,28 @@
       margin-top: 6px;
     }
 
+    .search-wrap {
+      margin: 12px auto 0;
+      max-width: 560px;
+      padding: 0 10px;
+    }
+
+    .search-input {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid #2d2d44;
+      background: #171726;
+      color: #e2e8f0;
+      padding: 10px 12px;
+      font-size: .86rem;
+    }
+
+    .search-input:focus-visible {
+      outline: none;
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 3px #60a5fa22;
+    }
+
     .roadmap {
       max-width: 900px;
       margin: 0 auto;
@@ -264,6 +286,9 @@
       <button class="btn" id="clear-btn" type="button">♻️ Limpar progresso</button>
     </div>
     <div class="feedback" id="feedback" aria-live="polite"></div>
+    <div class="search-wrap">
+      <input class="search-input" id="search-input" type="search" placeholder="Buscar tópico (ex: derivadas, frações, matrizes...)" aria-label="Buscar tópicos no roadmap" />
+    </div>
   </header>
 
   <main class="roadmap" id="roadmap" aria-label="Roadmap de Matemática"></main>
@@ -382,6 +407,7 @@
     const modal = document.getElementById('modal');
     const progressWrap = document.querySelector('.progress-bar-wrap');
     const feedback = document.getElementById('feedback');
+    const searchInput = document.getElementById('search-input');
 
     function showFeedback(message, isError = false) {
       feedback.textContent = message;
@@ -428,6 +454,7 @@
           node.type = 'button';
           node.dataset.nodeId = nodeData.id;
           node.setAttribute('aria-label', `${nodeData.title} - ${nodeData.sub}`);
+          node.dataset.search = `${nodeData.title} ${nodeData.sub}`.toLowerCase();
           node.innerHTML = `<div class="node-icon">${nodeData.icon}</div><div class="node-title">${nodeData.title}</div><div class="node-sub">${nodeData.sub}</div>`;
           row.appendChild(node);
         });
@@ -527,7 +554,26 @@
         await navigator.clipboard.writeText(window.location.href);
         showFeedback('Link copiado! Agora você pode abrir no PC ou celular.');
       } catch {
-        showFeedback('Não foi possível copiar automaticamente. Copie a URL do navegador.', true);
+        const ok = window.prompt('Copie o link abaixo:', window.location.href);
+        showFeedback(ok === null ? 'Cópia cancelada.' : 'Link exibido para cópia manual.', ok === null);
+      }
+    });
+
+    searchInput.addEventListener('input', event => {
+      const query = event.target.value.trim().toLowerCase();
+      const nodes = document.querySelectorAll('[data-node-id]');
+      let visible = 0;
+
+      nodes.forEach(node => {
+        const match = query.length === 0 || node.dataset.search.includes(query);
+        node.style.display = match ? '' : 'none';
+        if (match) visible += 1;
+      });
+
+      if (query.length === 0) {
+        showFeedback('');
+      } else {
+        showFeedback(`${visible} tópico(s) encontrado(s).`, visible === 0);
       }
     });
 
