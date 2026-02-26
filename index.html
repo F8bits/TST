@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Roadmap completo de matemática com progresso salvo no navegador para estudar do básico ao avançado em qualquer dispositivo." />
+  <meta name="theme-color" content="#0f0f13" />
+  <title>Math Roadmap</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0f0f13;
+      color: #e2e8f0;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
+    }
+
+    header { text-align: center; padding: 40px 20px 20px; }
+    header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #a78bfa, #60a5fa, #34d399);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+    }
+    header p { color: #94a3b8; margin-top: 8px; font-size: .95rem; }
+
+    .progress-bar-wrap {
+      max-width: 500px;
+      margin: 16px auto;
+      background: #1e1e2e;
+      border-radius: 99px;
+      height: 8px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 8px;
+      border-radius: 99px;
+      background: linear-gradient(90deg, #a78bfa, #60a5fa);
+      width: 0%;
+      transition: width .4s;
+    }
+    .progress-label {
+      text-align: center;
+      color: #64748b;
+      font-size: .8rem;
+      margin-top: 6px;
+    }
+
+    .top-actions {
+      margin: 18px auto 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 1px solid #2d2d44;
+      background: #171726;
+      color: #cbd5e1;
+      padding: 8px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: .82rem;
+      transition: .2s;
+    }
+
+    .btn:hover,
+    .btn:focus-visible {
+      border-color: #60a5fa;
+      color: #f1f5f9;
+      outline: none;
+    }
+
+    .feedback {
+      color: #34d399;
+      min-height: 1.2em;
+      font-size: .76rem;
+      text-align: center;
+      margin-top: 6px;
+    }
+
+    .roadmap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px 16px 80px;
+      position: relative;
+    }
+
+    .roadmap::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, #a78bfa22, #60a5fa44, #34d39922);
+      transform: translateX(-50%);
+    }
+
+    .level { margin-bottom: 10px; }
+    .level-header { text-align: center; margin: 32px 0 12px; position: relative; z-index: 2; }
+    .level-badge {
+      display: inline-block;
+      padding: 4px 18px;
+      border-radius: 99px;
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .nodes-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 2;
+      margin-bottom: 6px;
+    }
+
+    .node {
+      background: #1a1a27;
+      border: 1.5px solid #2d2d44;
+      border-radius: 12px;
+      padding: 14px 16px;
+      width: 190px;
+      cursor: pointer;
+      transition: transform .2s, box-shadow .2s, border-color .2s;
+      position: relative;
+      user-select: none;
+      text-align: left;
+    }
+    .node:hover,
+    .node:focus-visible {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, .5);
+      outline: none;
+    }
+    .node.done { opacity: .7; }
+    .node.done::after {
+      content: '✓';
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      font-size: .8rem;
+      color: #34d399;
+      font-weight: 700;
+    }
+
+    .node-icon { font-size: 1.4rem; margin-bottom: 6px; }
+    .node-title { font-size: .88rem; font-weight: 700; color: #f1f5f9; margin-bottom: 3px; }
+    .node-sub { font-size: .72rem; color: #64748b; line-height: 1.4; }
+
+    .lv0 .node { border-color: #7c3aed44; } .lv0 .node:hover, .lv0 .node:focus-visible { border-color: #7c3aed; box-shadow: 0 0 20px #7c3aed33; }
+    .lv1 .node { border-color: #2563eb44; } .lv1 .node:hover, .lv1 .node:focus-visible { border-color: #2563eb; box-shadow: 0 0 20px #2563eb33; }
+    .lv2 .node { border-color: #0891b244; } .lv2 .node:hover, .lv2 .node:focus-visible { border-color: #0891b2; box-shadow: 0 0 20px #0891b233; }
+    .lv3 .node { border-color: #05966944; } .lv3 .node:hover, .lv3 .node:focus-visible { border-color: #059669; box-shadow: 0 0 20px #05966933; }
+    .lv4 .node { border-color: #d9770644; } .lv4 .node:hover, .lv4 .node:focus-visible { border-color: #d97706; box-shadow: 0 0 20px #d9770633; }
+    .lv5 .node { border-color: #dc262644; } .lv5 .node:hover, .lv5 .node:focus-visible { border-color: #dc2626; box-shadow: 0 0 20px #dc262633; }
+    .lv6 .node { border-color: #db277744; } .lv6 .node:hover, .lv6 .node:focus-visible { border-color: #db2777; box-shadow: 0 0 20px #db277733; }
+    .lv7 .node { border-color: #65a30d44; } .lv7 .node:hover, .lv7 .node:focus-visible { border-color: #65a30d; box-shadow: 0 0 20px #65a30d33; }
+    .lv8 .node { border-color: #9333ea44; } .lv8 .node:hover, .lv8 .node:focus-visible { border-color: #9333ea; box-shadow: 0 0 20px #9333ea33; }
+
+    .badge-lv0 { background: #7c3aed22; color: #a78bfa; border: 1px solid #7c3aed44; }
+    .badge-lv1 { background: #2563eb22; color: #60a5fa; border: 1px solid #2563eb44; }
+    .badge-lv2 { background: #0891b222; color: #38bdf8; border: 1px solid #0891b244; }
+    .badge-lv3 { background: #05966922; color: #34d399; border: 1px solid #05966944; }
+    .badge-lv4 { background: #d9770622; color: #fbbf24; border: 1px solid #d9770644; }
+    .badge-lv5 { background: #dc262622; color: #f87171; border: 1px solid #dc262644; }
+    .badge-lv6 { background: #db277722; color: #f472b6; border: 1px solid #db277744; }
+    .badge-lv7 { background: #65a30d22; color: #a3e635; border: 1px solid #65a30d44; }
+    .badge-lv8 { background: #9333ea22; color: #c084fc; border: 1px solid #9333ea44; }
+
+    .connector {
+      text-align: center;
+      color: #334155;
+      font-size: 1.2rem;
+      margin: 4px 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #000a;
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #16162a;
+      border: 1px solid #2d2d44;
+      border-radius: 16px;
+      max-width: 480px;
+      width: 100%;
+      padding: 28px;
+      position: relative;
+      animation: pop .2s ease;
+    }
+    @keyframes pop { from { transform: scale(.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .modal h2 { font-size: 1.2rem; font-weight: 800; margin-bottom: 4px; }
+    .modal .modal-tags { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0; }
+    .modal .tag { font-size: .7rem; padding: 2px 10px; border-radius: 99px; background: #1e1e3a; color: #94a3b8; }
+    .modal p { font-size: .85rem; color: #94a3b8; line-height: 1.6; margin-bottom: 12px; }
+    .modal ul { font-size: .82rem; color: #94a3b8; padding-left: 18px; line-height: 1.8; }
+    .modal .close-btn {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: none;
+      border: none;
+      color: #64748b;
+      font-size: 1.3rem;
+      cursor: pointer;
+    }
+    .modal .mark-btn {
+      margin-top: 18px;
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 700;
+      font-size: .9rem;
+      cursor: pointer;
+      background: #a78bfa;
+      color: #0f0f13;
+      transition: background .2s;
+    }
+    .modal .mark-btn:hover { background: #c4b5fd; }
+    .modal .mark-btn.undone { background: #1e1e3a; color: #94a3b8; }
+
+    @media (max-width: 768px) {
+      header { padding-top: 26px; }
+      header h1 { font-size: 1.6rem; }
+      .roadmap::before { display: none; }
+      .nodes-row { gap: 10px; }
+      .node { width: min(100%, 360px); }
+      .level-header { margin-top: 24px; }
+      .modal { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🧮 Roadmap de Matemática</h1>
+    <p>Do zero absoluto até a matemática universitária avançada. Clique em qualquer tópico para aprender mais.</p>
+    <div class="progress-bar-wrap" role="progressbar" aria-label="Progresso de tópicos concluídos" aria-valuemin="0" aria-valuemax="35" aria-valuenow="0">
+      <div class="progress-bar" id="pbar"></div>
+    </div>
+    <div class="progress-label" id="plabel">0 de 35 tópicos concluídos</div>
+    <div class="top-actions">
+      <button class="btn" id="share-btn" type="button">🔗 Copiar link do site</button>
+      <button class="btn" id="clear-btn" type="button">♻️ Limpar progresso</button>
+    </div>
+    <div class="feedback" id="feedback" aria-live="polite"></div>
+  </header>
+
+  <main class="roadmap" id="roadmap" aria-label="Roadmap de Matemática"></main>
+
+  <div class="modal-overlay" id="modal" aria-hidden="true">
+    <div class="modal" id="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button class="close-btn" type="button" id="close-btn" aria-label="Fechar modal">✕</button>
+      <div id="modal-icon" style="font-size:2rem;margin-bottom:8px" aria-hidden="true"></div>
+      <h2 id="modal-title"></h2>
+      <div class="modal-tags" id="modal-tags"></div>
+      <p id="modal-desc"></p>
+      <ul id="modal-topics"></ul>
+      <button class="mark-btn" id="mark-btn" type="button"></button>
+    </div>
+  </div>
+
+  <script>
+    const levels = [
+      {
+        id: 'lv0', label: '— Nível 0 · Ponto de Partida —', badge: 'badge-lv0',
+        nodes: [
+          { id: 'n0', icon: '🔢', title: 'Números e Contagem', sub: 'Naturais, inteiros, zero', desc: 'Tudo começa aqui. Números são a linguagem do universo. Você aprende a nomear quantidades, entender o zero (que levou milênios pra ser aceito!) e contar sem limites.', topics: ['Números naturais (0, 1, 2, 3...)', 'Linha numérica', 'Comparar e ordenar números', 'O que é o zero?', 'Infinito: existe?'] },
+          { id: 'n1', icon: '➕', title: 'Operações Básicas', sub: 'Soma, subtração, multiplicação, divisão', desc: 'As 4 operações são as ferramentas fundamentais. Tudo mais em matemática é uma combinação dessas quatro.', topics: ['Adição e subtração', 'Multiplicação (tabuada)', 'Divisão exata e com resto', 'Propriedades comutativa, associativa, distributiva', 'Ordem das operações (PEMDAS)'] },
+          { id: 'n2', icon: '🧩', title: 'Frações', sub: 'Partes do todo', desc: 'Frações existem porque o mundo não é inteiro. Você precisa dividir uma pizza, medir 1/3 de xícara. O conceito de "parte por inteiro" é crucial.', topics: ['Numerador e denominador', 'Frações equivalentes', 'Simplificação', 'Soma e subtração de frações', 'Multiplicação e divisão de frações'] },
+          { id: 'n3', icon: '💯', title: 'Decimais e Porcentagem', sub: 'Frações no formato decimal', desc: 'Decimais são frações com denominador potência de 10. Porcentagem é "por cento", literalmente fração com denominador 100.', topics: ['Notação decimal', 'Conversão fração ↔ decimal', 'O que é %?', 'Calcular desconto e acréscimo', 'Juros simples básico'] },
+        ]
+      },
+      {
+        id: 'lv1', label: '— Nível 1 · Aritmética —', badge: 'badge-lv1',
+        nodes: [
+          { id: 'n4', icon: '⚡', title: 'Potenciação e Radiciação', sub: 'Multiplicação repetida', desc: 'Potência é um atalho para multiplicação repetida. 2⁸ = 256. Raiz é a operação inversa. São a base de crescimento exponencial, algo presente em finanças, biologia e física.', topics: ['Potências inteiras', 'Propriedades das potências', 'Raiz quadrada e cúbica', 'Números irracionais (√2)', 'Notação científica'] },
+          { id: 'n5', icon: '🔗', title: 'Divisibilidade', sub: 'MMC, MDC, primos', desc: 'Todo número é feito de "átomos" chamados números primos. O crivo de Eratóstenes é um dos algoritmos mais antigos da história (276 a.C.)!', topics: ['Critérios de divisibilidade', 'Números primos', 'Fatoração em primos', 'MMC e MDC', 'Teorema fundamental da Aritmética'] },
+          { id: 'n6', icon: '⚖️', title: 'Razão e Proporção', sub: 'Relações entre grandezas', desc: 'Razão é uma comparação. Proporção é quando duas razões são iguais. Escala, velocidade, receitas culinárias — tudo usa proporção.', topics: ['Razão a:b', 'Proporções', 'Regra de 3 simples', 'Regra de 3 composta', 'Grandezas diretamente/inversamente proporcionais'] },
+        ]
+      },
+      {
+        id: 'lv2', label: '— Nível 2 · Álgebra Básica —', badge: 'badge-lv2',
+        nodes: [
+          { id: 'n7', icon: '🔤', title: 'Variáveis e Expressões', sub: 'Letras em vez de números', desc: 'Uma variável é um número que você ainda não sabe. A álgebra é a arte de trabalhar com o desconhecido. Einstein usou isso pra chegar em E=mc².', topics: ['O que é uma variável?', 'Expressões algébricas', 'Polinômios', 'Fatoração básica', 'Produtos notáveis'] },
+          { id: 'n8', icon: '⚡', title: 'Equações do 1º Grau', sub: 'Achar o valor de x', desc: 'Uma equação é uma balança: o que você faz de um lado, faz do outro. Resolver equações é o coração da matemática aplicada.', topics: ['Princípio da equivalência', 'Equações lineares simples', 'Equações com frações', 'Verificação da solução', 'Problemas contextualizados'] },
+          { id: 'n9', icon: '📐', title: 'Sistemas de Equações', sub: 'Mais de uma equação ao mesmo tempo', desc: 'Quando você tem dois desconhecidos, precisa de duas equações. Sistemas aparecem em todo cálculo de equilíbrio, mistura e intersecção.', topics: ['Método da substituição', 'Método da adição (eliminação)', 'Método gráfico', 'Sistema sem solução / infinitas soluções', 'Aplicações práticas'] },
+          { id: 'n10', icon: '📏', title: 'Inequações', sub: 'Maior, menor, desigualdades', desc: 'Nem tudo é igual. Inequações definem intervalos onde soluções existem. Fundamentais em otimização e programação linear.', topics: ['Símbolos <, >, ≤, ≥', 'Inequações do 1º grau', 'Representação na reta numérica', 'Intervalos', 'Inequações compostas'] },
+        ]
+      },
+      {
+        id: 'lv3', label: '— Nível 3 · Geometria —', badge: 'badge-lv3',
+        nodes: [
+          { id: 'n11', icon: '📐', title: 'Geometria Plana', sub: 'Figuras em 2D', desc: 'Pitágoras descobriu que em todo triângulo retângulo, a² + b² = c². Esse único teorema é a base da engenharia, arquitetura e GPS.', topics: ['Pontos, retas e planos', 'Ângulos', 'Triângulos (Pitágoras!)', 'Quadriláteros e polígonos', 'Circunferência e círculo', 'Área e perímetro'] },
+          { id: 'n12', icon: '📦', title: 'Geometria Espacial', sub: 'Figuras em 3D', desc: 'O mundo real é 3D. Volume de uma caixa, área de uma lata, capacidade de um reservatório — tudo é geometria espacial.', topics: ['Prismas e pirâmides', 'Cilindros, cones, esferas', 'Volume e área total', 'Planificação de sólidos', 'Seções transversais'] },
+          { id: 'n13', icon: '📡', title: 'Trigonometria', sub: 'Seno, cosseno, tangente', desc: 'Trigonometria nasceu para medir o que não dava pra alcançar — a altura de uma montanha, a distância até a Lua. soh-cah-toa é só o começo.', topics: ['Triângulo retângulo', 'Seno, cosseno, tangente', 'Lei dos senos e cossenos', 'Ângulos notáveis (30°, 45°, 60°)', 'Aplicações de altura e distância'] },
+        ]
+      },
+      {
+        id: 'lv4', label: '— Nível 4 · Álgebra Intermediária —', badge: 'badge-lv4',
+        nodes: [
+          { id: 'n14', icon: '🌊', title: 'Equações do 2º Grau', sub: 'Baskara e fórmula quadrática', desc: 'ax² + bx + c = 0. A fórmula de Bhaskara (nome correto!) veio do matemático indiano Brahmagupta. O discriminante Δ decide tudo.', topics: ['Forma geral ax²+bx+c', 'Fórmula de Bhaskara', 'Discriminante Δ', 'Produto e soma das raízes (Viète)', 'Equações biquadráticas'] },
+          { id: 'n15', icon: '📈', title: 'Funções', sub: 'Relações de entrada e saída', desc: 'Uma função é uma máquina: entra x, sai f(x). Funções descrevem todo fenômeno do mundo: temperatura, crescimento, lucro.', topics: ['Definição de função', 'Domínio, contradomínio e imagem', 'Função afim (linear)', 'Função quadrática (parábola)', 'Gráficos e transformações'] },
+          { id: 'n16', icon: '📉', title: 'Funções Exponenciais e Log', sub: 'Crescimento e escala', desc: 'Exponencial descreve vírus, dívidas e explosões nucleares. Logaritmo é o inverso — e é a escala da música (dó-ré-mi é exponencial!).', topics: ['f(x) = aˣ', 'Propriedades da exponencial', 'Definição de logaritmo', 'Propriedades do log', 'log natural (ln) e número e'] },
+          { id: 'n17', icon: '🔢', title: 'PA e PG', sub: 'Sequências e progressões', desc: 'Progressões aritmética (soma constante) e geométrica (razão constante). Juros compostos é uma PG. A soma dos termos gera fórmulas elegantíssimas.', topics: ['Sequências numéricas', 'PA: definição e fórmulas', 'PG: definição e fórmulas', 'Soma dos termos', 'Aplicação em juros compostos'] },
+        ]
+      },
+      {
+        id: 'lv5', label: '— Nível 5 · Pré-Cálculo —', badge: 'badge-lv5',
+        nodes: [
+          { id: 'n18', icon: '🌀', title: 'Trigonometria Avançada', sub: 'Ciclo trigonométrico', desc: 'Seno e cosseno são funções periódicas — descrevem ondas de som, luz, eletricidade. O círculo unitário unifica tudo.', topics: ['Ciclo trigonométrico', 'Funções sen, cos, tg e inversas', 'Identidades trigonométricas', 'Fórmulas de adição', 'Equações trigonométricas'] },
+          { id: 'n19', icon: '🔮', title: 'Números Complexos', sub: 'A raiz de -1 existe!', desc: 'i = √(-1). Parece mentira, mas números complexos são a base da engenharia elétrica, mecânica quântica e processamento de sinais. O plano de Argand é lindo.', topics: ['Definição de i', 'Forma algébrica a+bi', 'Operações com complexos', 'Módulo e argumento', 'Fórmula de Euler: eⁱˣ = cos x + i·sen x'] },
+          { id: 'n20', icon: '🎲', title: 'Combinatória', sub: 'Contar sem listar', desc: 'Quantas senhas de 4 dígitos existem? Quantas mãos no poker? Combinatória responde isso de forma exata e elegante.', topics: ['Princípio Fundamental da Contagem', 'Fatorial', 'Permutações', 'Combinações', 'Binômio de Newton'] },
+          { id: 'n21', icon: '📊', title: 'Probabilidade e Estatística Básica', sub: 'Incerteza com precisão', desc: 'Probabilidade quantifica o acaso. Estatística resume dados. Juntas, são a base da ciência moderna, medicina, IA.', topics: ['Espaço amostral e eventos', 'P(A) e regras básicas', 'Média, mediana, moda', 'Desvio padrão e variância', 'Distribuições: normal, binomial'] },
+        ]
+      },
+      {
+        id: 'lv6', label: '— Nível 6 · Cálculo —', badge: 'badge-lv6',
+        nodes: [
+          { id: 'n22', icon: '🔭', title: 'Limites', sub: 'O que acontece quando x → a', desc: 'Limite é perguntar: "pra onde vai a função enquanto x se aproxima de algo?" Newton e Leibniz inventaram o cálculo para descrever movimento. Aqui começa a revolução.', topics: ['Conceito intuitivo de limite', 'Limites laterais', 'Limites no infinito', 'Formas indeterminadas', 'Continuidade de funções'] },
+          { id: 'n23', icon: '📐', title: 'Derivadas', sub: 'Taxa de variação instantânea', desc: 'Derivada é a inclinação da curva num ponto. Velocidade é derivada da posição. Aceleração é derivada da velocidade. Física inteira usa isso.', topics: ['Definição via limite', 'Regras (produto, quociente, cadeia)', 'Derivadas elementares', 'Máximos e mínimos', 'Aplicações: otimização'] },
+          { id: 'n24', icon: '🌊', title: 'Integrais', sub: 'Área sob a curva', desc: 'Integral é a operação inversa da derivada (Teorema Fundamental do Cálculo). Com ela você calcula área, volume, trabalho, probabilidade.', topics: ['Integral como área', 'Integral indefinida e definida', 'Regras de integração', 'Integração por substituição', 'Integral por partes'] },
+          { id: 'n25', icon: '🌀', title: 'Equações Diferenciais', sub: 'Equações com derivadas', desc: 'A física do universo é escrita em EDOs. F=ma é uma equação diferencial. Crescimento populacional, circuitos elétricos, calor — tudo.', topics: ['O que é uma EDO?', 'EDOs de 1ª ordem separáveis', 'EDOs lineares com coeficiente constante', 'Modelo de crescimento (Malthus)', 'Circuitos RC e osciladores'] },
+        ]
+      },
+      {
+        id: 'lv7', label: '— Nível 7 · Álgebra Linear —', badge: 'badge-lv7',
+        nodes: [
+          { id: 'n26', icon: '➡️', title: 'Vetores', sub: 'Grandezas com direção', desc: 'Vetores têm magnitude e direção. São a linguagem da física, computação gráfica e machine learning. Todo embedding de IA é um vetor.', topics: ['Definição e notação', 'Operações: soma e escalar', 'Produto escalar (dot product)', 'Produto vetorial (cross product)', 'Projeção e ortogonalidade'] },
+          { id: 'n27', icon: '🟩', title: 'Matrizes', sub: 'Grades de números', desc: 'Matrizes organizam sistemas de equações. São o coração de transformações lineares, redes neurais e gráficos 3D (rotação, escala, translação são matrizes!).', topics: ['Definição e operações', 'Multiplicação de matrizes', 'Matriz transposta e inversa', 'Determinante', 'Sistemas lineares via matrizes (Gauss)'] },
+          { id: 'n28', icon: '🔁', title: 'Espaços Vetoriais', sub: 'Estrutura abstrata', desc: 'Um espaço vetorial é qualquer conjunto com soma e escalar que obedecem certas regras. Funções, polinômios e matrizes são espaços vetoriais!', topics: ['Axiomas do espaço vetorial', 'Subespaços', 'Base e dimensão', 'Independência linear', 'Transformações lineares'] },
+          { id: 'n29', icon: '🎯', title: 'Autovalores e Autovetores', sub: 'A "geometria" das transformações', desc: 'Autovetores são as direções que uma transformação não "vira" — só escala. Google PageRank, análise de componentes principais (PCA) em IA — tudo usa isso.', topics: ['Definição de autovalor λ', 'Equação característica', 'Diagonalização', 'Decomposição espectral', 'Aplicação em PCA e Machine Learning'] },
+        ]
+      },
+      {
+        id: 'lv8', label: '— Nível 8 · Matemática Avançada —', badge: 'badge-lv8',
+        nodes: [
+          { id: 'n30', icon: '🧠', title: 'Análise Real', sub: 'O rigor por trás do Cálculo', desc: 'Análise Real é o Cálculo com prova formal. Aqui você entende o que "limite" significa de verdade, com épsilons e deltas. Matemática pura começa aqui.', topics: ['Sequências e séries convergentes', 'Definição ε-δ de limite', 'Teorema do Valor Intermediário', 'Completude dos reais', 'Integração de Riemann'] },
+          { id: 'n31', icon: '🔣', title: 'Álgebra Abstrata', sub: 'Grupos, anéis e corpos', desc: 'Grupos são estruturas com uma operação e 4 axiomas. Parecem abstratos, mas descrevem simetrias da física de partículas, criptografia RSA e muito mais.', topics: ['Grupos e subgrupos', 'Homomorfismos', 'Anéis e ideais', 'Corpos (fields)', 'Teoria de Galois (noção)'] },
+          { id: 'n32', icon: '🌐', title: 'Topologia', sub: 'Geometria sem distância', desc: 'Topologia estuda o que não muda quando você estica ou dobra um espaço (sem rasgar). Uma xícara e uma rosquinha são topologicamente idênticas — e isso não é piada!', topics: ['Espaços métricos', 'Espaços topológicos', 'Continuidade topológica', 'Compacidade e conexidade', 'Noção de homeomorfismo'] },
+          { id: 'n33', icon: '📡', title: 'Cálculo em Várias Variáveis', sub: 'Funções de ℝⁿ → ℝᵐ', desc: 'O mundo tem mais de uma variável. Gradiente, divergente, rotacional — ferramentas do cálculo multivariável são a base da física, eletromagnetismo e deep learning.', topics: ['Funções de 2+ variáveis', 'Derivadas parciais', 'Gradiente e plano tangente', 'Integrais duplas e triplas', 'Teoremas de Green, Stokes, Gauss'] },
+          { id: 'n34', icon: '🎲', title: 'Probabilidade Avançada', sub: 'Teoria da medida e processos', desc: 'Probabilidade formal usa teoria da medida. Processos estocásticos descrevem o mercado financeiro, difusão de moléculas e passeios aleatórios.', topics: ['Sigma-álgebras e medida', 'Variáveis aleatórias contínuas', 'Distribuições avançadas', 'Processos de Markov', 'Movimento Browniano'] },
+        ]
+      },
+    ];
+
+    const allNodes = levels.flatMap(level => level.nodes);
+    const nodeById = new Map(allNodes.map(node => [node.id, node]));
+
+    function readDoneFromStorage() {
+      try {
+        const stored = JSON.parse(localStorage.getItem('math_done') || '[]');
+        if (!Array.isArray(stored)) return new Set();
+        const validIds = stored.filter(id => typeof id === 'string' && nodeById.has(id));
+        return new Set(validIds);
+      } catch {
+        return new Set();
+      }
+    }
+
+    const done = readDoneFromStorage();
+    const modal = document.getElementById('modal');
+    const progressWrap = document.querySelector('.progress-bar-wrap');
+    const feedback = document.getElementById('feedback');
+
+    function showFeedback(message, isError = false) {
+      feedback.textContent = message;
+      feedback.style.color = isError ? '#f87171' : '#34d399';
+      window.clearTimeout(showFeedback.timeoutId);
+      showFeedback.timeoutId = window.setTimeout(() => {
+        feedback.textContent = '';
+      }, 2400);
+    }
+
+    function saveDone() {
+      localStorage.setItem('math_done', JSON.stringify([...done]));
+    }
+
+    function updateProgress() {
+      const total = allNodes.length;
+      const n = done.size;
+      const pct = total === 0 ? 0 : (n / total) * 100;
+
+      document.getElementById('pbar').style.width = `${pct}%`;
+      document.getElementById('plabel').textContent = `${n} de ${total} tópicos concluídos`;
+      progressWrap.setAttribute('aria-valuenow', String(n));
+      progressWrap.setAttribute('aria-valuemax', String(total));
+    }
+
+    function buildRoadmap() {
+      const container = document.getElementById('roadmap');
+
+      levels.forEach((lv, li) => {
+        const lvDiv = document.createElement('section');
+        lvDiv.className = `level ${lv.id}`;
+
+        const header = document.createElement('div');
+        header.className = 'level-header';
+        header.innerHTML = `<span class="level-badge ${lv.badge}">${lv.label}</span>`;
+        lvDiv.appendChild(header);
+
+        const row = document.createElement('div');
+        row.className = 'nodes-row';
+
+        lv.nodes.forEach(nodeData => {
+          const node = document.createElement('button');
+          node.className = `node${done.has(nodeData.id) ? ' done' : ''}`;
+          node.type = 'button';
+          node.dataset.nodeId = nodeData.id;
+          node.setAttribute('aria-label', `${nodeData.title} - ${nodeData.sub}`);
+          node.innerHTML = `<div class="node-icon">${nodeData.icon}</div><div class="node-title">${nodeData.title}</div><div class="node-sub">${nodeData.sub}</div>`;
+          row.appendChild(node);
+        });
+
+        lvDiv.appendChild(row);
+
+        if (li < levels.length - 1) {
+          const c = document.createElement('div');
+          c.className = 'connector';
+          c.textContent = '⬇';
+          lvDiv.appendChild(c);
+        }
+
+        container.appendChild(lvDiv);
+      });
+
+      updateProgress();
+    }
+
+    let currentNode = null;
+
+    function openModal(nodeData) {
+      currentNode = nodeData;
+      document.getElementById('modal-icon').textContent = nodeData.icon;
+      document.getElementById('modal-title').textContent = nodeData.title;
+      document.getElementById('modal-desc').textContent = nodeData.desc;
+
+      const tags = document.getElementById('modal-tags');
+      tags.innerHTML = `<span class="tag">📚 ${nodeData.sub}</span>`;
+
+      const ul = document.getElementById('modal-topics');
+      ul.innerHTML = nodeData.topics.map(topic => `<li>${topic}</li>`).join('');
+
+      const btn = document.getElementById('mark-btn');
+      const isDone = done.has(nodeData.id);
+      btn.textContent = isDone ? '↩ Marcar como não concluído' : '✓ Marcar como concluído';
+      btn.className = `mark-btn${isDone ? ' undone' : ''}`;
+
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      btn.focus();
+    }
+
+    function updateNodeVisualState(nodeId) {
+      const button = document.querySelector(`[data-node-id="${nodeId}"]`);
+      if (!button) return;
+      button.classList.toggle('done', done.has(nodeId));
+    }
+
+    function toggleDone() {
+      if (!currentNode) return;
+
+      if (done.has(currentNode.id)) {
+        done.delete(currentNode.id);
+      } else {
+        done.add(currentNode.id);
+      }
+
+      updateNodeVisualState(currentNode.id);
+      saveDone();
+      updateProgress();
+      openModal(currentNode);
+    }
+
+    function closeModal() {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+    }
+
+    document.getElementById('roadmap').addEventListener('click', event => {
+      const target = event.target.closest('[data-node-id]');
+      if (!target) return;
+
+      const nodeData = nodeById.get(target.dataset.nodeId);
+      if (!nodeData) return;
+      openModal(nodeData);
+    });
+
+    modal.addEventListener('click', event => {
+      if (event.target.id === 'modal') closeModal();
+    });
+
+    document.getElementById('close-btn').addEventListener('click', closeModal);
+    document.getElementById('mark-btn').addEventListener('click', toggleDone);
+    document.getElementById('clear-btn').addEventListener('click', () => {
+      const shouldClear = window.confirm('Deseja remover todo o progresso salvo neste navegador?');
+      if (!shouldClear) return;
+      done.clear();
+      saveDone();
+      document.querySelectorAll('[data-node-id]').forEach(node => node.classList.remove('done'));
+      updateProgress();
+      showFeedback('Progresso limpo com sucesso.');
+    });
+
+    document.getElementById('share-btn').addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        showFeedback('Link copiado! Agora você pode abrir no PC ou celular.');
+      } catch {
+        showFeedback('Não foi possível copiar automaticamente. Copie a URL do navegador.', true);
+      }
+    });
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeModal();
+    });
+
+    buildRoadmap();
+  </script>
+</body>
+</html>
