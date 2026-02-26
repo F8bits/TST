@@ -8,8 +8,18 @@
   <title>Math Roadmap</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0e1a;
+      --panel: #131a2c;
+      --line: rgba(123, 162, 255, 0.08);
+    }
+
     body {
-      background: #0f0f13;
+      background: var(--bg);
+      background-image:
+        linear-gradient(var(--line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line) 1px, transparent 1px);
+      background-size: 34px 34px;
       color: #e2e8f0;
       font-family: 'Segoe UI', system-ui, sans-serif;
       min-height: 100vh;
@@ -262,20 +272,6 @@
     .modal .mark-btn:hover { background: #c4b5fd; }
     .modal .mark-btn.undone { background: #1e1e3a; color: #94a3b8; }
 
-    :root {
-      --bg: #0a0e1a;
-      --panel: #131a2c;
-      --line: rgba(123, 162, 255, 0.08);
-    }
-
-    body {
-      background: var(--bg);
-      background-image:
-        linear-gradient(var(--line) 1px, transparent 1px),
-        linear-gradient(90deg, var(--line) 1px, transparent 1px);
-      background-size: 34px 34px;
-    }
-
     .subtitle {
       font-size: .72rem;
       color: #8fa3c7;
@@ -350,6 +346,12 @@
 
     .resource-item a { color: #93c5fd; }
     .question-item summary { cursor: pointer; font-weight: 700; }
+    .prereq-status { font-size: .78rem; margin: 8px 0 12px; }
+    .prereq-status.ok { color: #34d399; }
+    .prereq-status.warn { color: #fbbf24; }
+    .hours-label { font-size: .78rem; color: #94a3b8; margin-top: 6px; }
+    #modal-icon { font-size:2rem; margin-bottom:8px; }
+    .mbody { padding:16px 20px; overflow-y:auto; flex:1; }
 
 
     @media (prefers-reduced-motion: reduce) {
@@ -376,10 +378,11 @@
     <h1>🧮 Roadmap de Matemática</h1>
     <p>Do zero absoluto até a matemática universitária avançada. Clique em qualquer tópico para aprender mais.</p>
     <p class="subtitle">modo estudo + recursos + questões</p>
-    <div class="progress-bar-wrap" role="progressbar" aria-label="Progresso de tópicos concluídos" aria-valuemin="0" aria-valuemax="35" aria-valuenow="0">
+    <div class="progress-bar-wrap" role="progressbar" aria-label="Progresso de tópicos concluídos" aria-valuemin="0" aria-valuenow="0">
       <div class="progress-bar" id="pbar"></div>
     </div>
     <div class="progress-label" id="plabel">0 de 35 tópicos concluídos</div>
+    <div class="hours-label" id="hours-label">⏱ 0 horas restantes</div>
     <div class="top-actions">
       <button class="btn" id="share-btn" type="button">🔗 Copiar link do site</button>
       <button class="btn" id="next-btn" type="button">▶ Continuar estudo</button>
@@ -399,7 +402,7 @@
   <div class="modal-overlay" id="modal" aria-hidden="true">
     <div class="modal" id="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-desc">
       <button class="close-btn" type="button" id="close-btn" aria-label="Fechar modal">✕</button>
-      <div id="modal-icon" style="font-size:2rem;margin-bottom:8px" aria-hidden="true"></div>
+      <div id="modal-icon" aria-hidden="true"></div>
       <h2 id="modal-title"></h2>
       <div class="modal-tags" id="modal-tags"></div>
       <div class="modal-tabs" role="tablist" aria-label="Conteúdo do tópico">
@@ -407,9 +410,10 @@
         <button class="tab-btn" id="tabbtn-resources" data-tab="resources" role="tab" aria-selected="false" aria-controls="tab-resources" tabindex="-1">🔗 Recursos</button>
         <button class="tab-btn" id="tabbtn-questions" data-tab="questions" role="tab" aria-selected="false" aria-controls="tab-questions" tabindex="-1">🎯 Questões</button>
       </div>
-      <div class="mbody" style="padding:16px 20px;overflow-y:auto;flex:1">
+      <div class="mbody">
         <section class="tab-panel active" id="tab-overview" role="tabpanel" aria-labelledby="tabbtn-overview">
           <p id="modal-desc"></p>
+          <div id="prereq-status" class="prereq-status" aria-live="polite"></div>
           <ul id="modal-topics"></ul>
         </section>
         <section class="tab-panel" id="tab-resources" role="tabpanel" aria-labelledby="tabbtn-resources" hidden>
@@ -510,10 +514,35 @@
     const allNodes = levels.flatMap(level => level.nodes);
     const nodeById = new Map(allNodes.map(node => [node.id, node]));
 
+    const resourcesByNode = {
+      n0:[{name:'Khan Academy Aritmética',url:'https://pt.khanacademy.org/math/arithmetic'},{name:'Contagem (Wikipédia)',url:'https://pt.wikipedia.org/wiki/Contagem'},{name:'Ferretto Matemática Básica',url:'https://www.youtube.com/@ProfessorFerretto'}],
+      n1:[{name:'Operações básicas (Khan)',url:'https://pt.khanacademy.org/math/arithmetic-home/arith-review-add-subtract'},{name:'PEMDAS (Math is Fun)',url:'https://www.mathsisfun.com/operation-order-pemdas.html'},{name:'Matemática Rio',url:'https://www.youtube.com/@matematicario'}],
+      n2:[{name:'Frações (Khan)',url:'https://pt.khanacademy.org/math/arithmetic/fraction-arithmetic'},{name:'Fração (Wikipédia)',url:'https://pt.wikipedia.org/wiki/Fra%C3%A7%C3%A3o'},{name:'Exercícios de frações',url:'https://brasilescola.uol.com.br/matematica/fracoes.htm'}],
+      n3:[{name:'Porcentagem (Khan)',url:'https://pt.khanacademy.org/math/arithmetic-home/arith-review-percent'},{name:'Juros simples',url:'https://pt.wikipedia.org/wiki/Juro_simples'},{name:'Descontos e acréscimos',url:'https://brasilescola.uol.com.br/matematica/porcentagem.htm'}]
+    };
+
+    const estimatedHoursByNode = Object.fromEntries(allNodes.map((n, i) => [n.id, 4 + (i % 4)]));
+    const requiresByNode = Object.fromEntries(allNodes.slice(1).map((n, i) => [n.id, [allNodes[i].id]]));
+
+    allNodes.forEach(node => {
+      node.resources = node.resources || resourcesByNode[node.id] || [
+        { name: `Khan Academy — ${node.title}`, url: 'https://pt.khanacademy.org/' },
+        { name: 'Professor Ferretto', url: 'https://www.youtube.com/@ProfessorFerretto' }
+      ];
+      node.questions = node.questions || [
+        { q: `Qual a ideia central de ${node.title}?`, a: `A ideia central é dominar ${node.sub.toLowerCase()} para evoluir no roadmap.` },
+        { q: `Cite uma aplicação prática de ${node.title}.`, a: `Aplicação prática: usar ${node.title.toLowerCase()} em problemas reais de estudo e modelagem.` },
+        { q: `Qual pré-requisito ajuda mais nesse tópico?`, a: 'Revise o tópico anterior do roadmap para consolidar a base.' }
+      ];
+      node.estimatedHours = node.estimatedHours || estimatedHoursByNode[node.id] || 4;
+      node.requires = node.requires || requiresByNode[node.id] || [];
+    });
+
+
     function readDoneFromStorage() {
       try {
         const stored = JSON.parse(localStorage.getItem('math_done') || '[]');
-        if (!Array.isArray(stored)) return new Set();
+        if (!Array.isArray(stored)) { localStorage.removeItem('math_done'); return new Set(); }
         const validIds = stored.filter(id => typeof id === 'string' && nodeById.has(id));
         return new Set(validIds);
       } catch {
@@ -531,12 +560,14 @@
     const supportsInert = 'inert' in HTMLElement.prototype;
     let lastFocusedEl = null;
     let previousBodyOverflow = '';
+    let feedbackTimeoutId = null;
+    let modalFocusables = [];
 
     function showFeedback(message, isError = false) {
       feedback.textContent = message;
       feedback.style.color = isError ? '#f87171' : '#34d399';
-      window.clearTimeout(showFeedback.timeoutId);
-      showFeedback.timeoutId = window.setTimeout(() => {
+      window.clearTimeout(feedbackTimeoutId);
+      feedbackTimeoutId = window.setTimeout(() => {
         feedback.textContent = '';
       }, 2400);
     }
@@ -560,6 +591,11 @@
       document.getElementById('plabel').textContent = `${n} de ${total} tópicos concluídos`;
       progressWrap.setAttribute('aria-valuenow', String(n));
       progressWrap.setAttribute('aria-valuemax', String(total));
+
+      const remainingHours = allNodes
+        .filter(node => !done.has(node.id))
+        .reduce((sum, node) => sum + (Number(node.estimatedHours) || 0), 0);
+      document.getElementById('hours-label').textContent = `⏱ ${remainingHours} horas restantes`;
     }
 
     function buildRoadmap() {
@@ -585,7 +621,6 @@
           node.setAttribute('aria-label', `${nodeData.title} - ${nodeData.sub}`);
           node.setAttribute('aria-controls', 'modal-box');
           node.setAttribute('aria-haspopup', 'dialog');
-          node.setAttribute('aria-pressed', done.has(nodeData.id) ? 'true' : 'false');
           node.dataset.search = `${nodeData.title} ${nodeData.sub} ${nodeData.desc} ${nodeData.topics.join(' ')}`.toLowerCase();
           node.innerHTML = `<div class="node-icon">${nodeData.icon}</div><div class="node-title">${nodeData.title}</div><div class="node-sub">${nodeData.sub}</div>`;
           row.appendChild(node);
@@ -610,7 +645,7 @@
 
     function getFocusable(root) {
       return [...root.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')]
-        .filter(el => !el.disabled && el.getAttribute('aria-hidden') !== 'true');
+        .filter(el => !el.disabled && el.getAttribute('aria-hidden') !== 'true' && !el.closest('[hidden]'));
     }
 
     function setBackgroundInert(isOpen) {
@@ -644,7 +679,7 @@
       }
 
       if (event.key !== 'Tab') return;
-      const focusables = getFocusable(modalBox);
+      const focusables = modalFocusables;
       if (!focusables.length) return;
 
       const first = focusables[0];
@@ -707,6 +742,12 @@
       tag.className = 'tag';
       tag.textContent = `📚 ${subtitle}`;
       tagsWrap.appendChild(tag);
+      if (currentNode && currentNode.estimatedHours) {
+        const timeTag = document.createElement('span');
+        timeTag.className = 'tag';
+        timeTag.textContent = `⏱ ~${currentNode.estimatedHours} horas`;
+        tagsWrap.appendChild(timeTag);
+      }
     }
 
     function renderTopics(topics) {
@@ -764,6 +805,20 @@
       ];
       renderQuestions(questions);
 
+      const prereqStatus = document.getElementById('prereq-status');
+      const requires = Array.isArray(nodeData.requires) ? nodeData.requires : [];
+      if (requires.length) {
+        const reqNames = requires.map(id => nodeById.get(id)?.title || id).join(', ');
+        const missing = requires.some(id => !done.has(id));
+        prereqStatus.className = `prereq-status ${missing ? 'warn' : 'ok'}`;
+        prereqStatus.textContent = missing
+          ? `⚠️ Pré-requisito: ${reqNames}`
+          : `✅ Pré-requisito concluído: ${reqNames}`;
+      } else {
+        prereqStatus.className = 'prereq-status';
+        prereqStatus.textContent = '';
+      }
+
       const btn = document.getElementById('mark-btn');
       const isDone = done.has(nodeData.id);
       btn.textContent = isDone ? '↩ Marcar como não concluído' : '✓ Marcar como concluído';
@@ -776,6 +831,7 @@
         setBackgroundInert(true);
         previousBodyOverflow = document.body.style.overflow;
         document.body.style.overflow = 'hidden';
+        modalFocusables = getFocusable(modalBox);
         document.addEventListener('keydown', onModalKeydown, true);
       }
       syncHash(nodeData.id);
@@ -788,7 +844,6 @@
       if (!button) return;
       const isDone = done.has(nodeId);
       button.classList.toggle('done', isDone);
-      button.setAttribute('aria-pressed', isDone ? 'true' : 'false');
     }
 
     function toggleDone() {
@@ -811,6 +866,7 @@
       modal.setAttribute('aria-hidden', 'true');
       setBackgroundInert(false);
       document.body.style.overflow = previousBodyOverflow;
+      modalFocusables = [];
       document.removeEventListener('keydown', onModalKeydown, true);
       syncHash('');
       if (lastFocusedEl && typeof lastFocusedEl.focus === 'function') {
@@ -853,30 +909,64 @@
       }
     });
 
-    searchInput.addEventListener('input', event => {
+    function debounce(fn, delay) {
+      let t = null;
+      return (...args) => {
+        clearTimeout(t);
+        t = setTimeout(() => fn(...args), delay);
+      };
+    }
+
+    const onSearchInput = debounce(event => {
       const query = event.target.value.trim().toLowerCase();
-      const nodes = document.querySelectorAll('[data-node-id]');
+      const levelSections = document.querySelectorAll('.level');
       let visible = 0;
 
-      nodes.forEach(node => {
-        const match = query.length === 0 || node.dataset.search.includes(query);
-        node.style.display = match ? '' : 'none';
-        if (match) visible += 1;
+      levelSections.forEach(section => {
+        const rowNodes = section.querySelectorAll('[data-node-id]');
+        let levelVisible = 0;
+        rowNodes.forEach(node => {
+          const match = query.length === 0 || node.dataset.search.includes(query);
+          node.style.display = match ? '' : 'none';
+          if (match) {
+            visible += 1;
+            levelVisible += 1;
+          }
+        });
+        section.style.display = levelVisible ? '' : 'none';
       });
 
-      if (query.length === 0) {
-        showFeedback('');
-      } else {
-        showFeedback(`${visible} tópico(s) encontrado(s).`, visible === 0);
-      }
-    });
+      document.querySelectorAll('.connector').forEach(connector => {
+        const prev = connector.previousElementSibling;
+        const next = connector.nextElementSibling;
+        connector.style.display = (prev && next && prev.style.display !== 'none' && next.style.display !== 'none') ? '' : 'none';
+      });
+
+      if (query.length === 0) showFeedback('');
+      else showFeedback(`${visible} tópico(s) encontrado(s).`, visible === 0);
+    }, 250);
+
+    searchInput.addEventListener('input', onSearchInput);
 
 
 
     document.getElementById('next-btn').addEventListener('click', () => {
-      const nextNode = allNodes.find(node => !done.has(node.id));
+      const nextNode = allNodes.find(node => !done.has(node.id) && (!node.requires || node.requires.every(id => done.has(id))));
       if (!nextNode) {
-        showFeedback('Parabéns! Todos os tópicos foram concluídos.');
+        const blocked = allNodes.find(node => !done.has(node.id));
+        if (!blocked) {
+          showFeedback('Parabéns! Todos os tópicos foram concluídos.');
+          return;
+        }
+        const missing = (blocked.requires || []).filter(id => !done.has(id));
+        if (missing.length) {
+          const name = nodeById.get(missing[0])?.title || missing[0];
+          showFeedback(`Para avançar, conclua antes: ${name}.`, true);
+          const triggerMissing = document.querySelector(`[data-node-id="${missing[0]}"]`);
+          if (triggerMissing) openModal(nodeById.get(missing[0]), triggerMissing);
+          return;
+        }
+        showFeedback('Nenhum tópico disponível no momento.', true);
         return;
       }
       const trigger = document.querySelector(`[data-node-id="${nextNode.id}"]`);
