@@ -1,799 +1,740 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Roadmap de Matemática</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap');
-:root{--bg:#0a0e1a;--c0:#ffd166;--c1:#06d6a0;--c2:#118ab2;--c3:#ef476f;--c4:#a855f7;--c5:#f97316;--c6:#22d3ee;--c7:#fb923c;--c8:#4ade80}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);font-family:'Syne',sans-serif;color:#e2e8f0;min-height:100vh;background-image:linear-gradient(rgba(100,150,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(100,150,255,.04) 1px,transparent 1px);background-size:40px 40px}
-header{text-align:center;padding:48px 20px 28px}
-h1{font-size:clamp(1.8rem,5vw,3rem);font-weight:800;background:linear-gradient(135deg,#ffd166,#ef476f,#a855f7,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.subtitle{font-family:'Space Mono',monospace;font-size:.7rem;color:rgba(255,255,255,.3);margin-top:8px;letter-spacing:3px;text-transform:uppercase}
-.pw{max-width:500px;margin:18px auto 0}.pb-bg{background:rgba(255,255,255,.06);border-radius:99px;height:5px;overflow:hidden}
-.pb{height:5px;border-radius:99px;background:linear-gradient(90deg,#ffd166,#ef476f,#a855f7);width:0%;transition:width .4s}
-.pl{font-family:'Space Mono',monospace;font-size:.62rem;color:rgba(255,255,255,.3);text-align:center;margin-top:5px;letter-spacing:1px}
-.map{max-width:1280px;margin:0 auto;padding:16px 20px 80px;display:flex;flex-direction:column;gap:6px}
-.stage{display:flex;gap:14px;align-items:flex-start;margin-bottom:2px}
-.slabel{writing-mode:vertical-rl;font-family:'Space Mono',monospace;font-size:.55rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.12);min-width:24px;display:flex;align-items:center;justify-content:center;padding-top:4px}
-.scontent{flex:1;display:flex;flex-direction:column;gap:8px}
-.sh{font-family:'Space Mono',monospace;font-size:.58rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:3px 12px;border-radius:99px;display:inline-flex;align-items:center;gap:6px;width:fit-content;margin-bottom:2px}
-.row{display:grid;gap:8px}
-.r1{grid-template-columns:1fr}.r2{grid-template-columns:1fr 1fr}.r3{grid-template-columns:1fr 1fr 1fr}.r4{grid-template-columns:repeat(4,1fr)}
-.node{border-radius:10px;padding:13px 15px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.025);cursor:pointer;transition:all .18s;text-align:left;position:relative}
-.node:hover{transform:translateY(-2px)}.node.done{opacity:.55}
-.node.done::after{content:'✓';position:absolute;top:9px;right:11px;font-size:.75rem;font-weight:700;color:#4ade80}
-.nh{display:flex;align-items:center;gap:7px;margin-bottom:9px}
-.ni{font-size:1rem}.nt{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
-.ntags{display:flex;flex-wrap:wrap;gap:4px}
-.tag{font-family:'Space Mono',monospace;font-size:.62rem;padding:3px 7px;border-radius:5px;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.07)}
-.tag.k{font-weight:700;border-color:rgba(255,255,255,.14)}
-.nnote{font-family:'Space Mono',monospace;font-size:.56rem;color:rgba(255,255,255,.22);margin-top:7px;font-style:italic}
-.connector{text-align:center;padding:3px 0;font-family:'Space Mono',monospace;font-size:.58rem;color:rgba(255,255,255,.13);letter-spacing:3px;display:flex;align-items:center;justify-content:center;gap:10px}
-.connector::before,.connector::after{content:'';flex:1;max-width:180px;height:1px;background:rgba(255,255,255,.05)}
-/* Stage colors */
-.s0 .node{border-color:rgba(255,209,102,.14);background:rgba(255,209,102,.03)}.s0 .node:hover{border-color:rgba(255,209,102,.4);box-shadow:0 6px 24px rgba(255,209,102,.1)}.s0 .nt{color:var(--c0)}.s0 .tag.k{background:rgba(255,209,102,.12);border-color:rgba(255,209,102,.25);color:var(--c0)}.s0 .sh{background:rgba(255,209,102,.1);color:var(--c0);border:1px solid rgba(255,209,102,.25)}
-.s1 .node{border-color:rgba(6,214,160,.14);background:rgba(6,214,160,.03)}.s1 .node:hover{border-color:rgba(6,214,160,.4);box-shadow:0 6px 24px rgba(6,214,160,.1)}.s1 .nt{color:var(--c1)}.s1 .tag.k{background:rgba(6,214,160,.12);border-color:rgba(6,214,160,.25);color:var(--c1)}.s1 .sh{background:rgba(6,214,160,.1);color:var(--c1);border:1px solid rgba(6,214,160,.25)}
-.s2 .node{border-color:rgba(17,138,178,.14);background:rgba(17,138,178,.03)}.s2 .node:hover{border-color:rgba(17,138,178,.4);box-shadow:0 6px 24px rgba(17,138,178,.1)}.s2 .nt{color:var(--c2)}.s2 .tag.k{background:rgba(17,138,178,.12);border-color:rgba(17,138,178,.25);color:var(--c2)}.s2 .sh{background:rgba(17,138,178,.1);color:var(--c2);border:1px solid rgba(17,138,178,.25)}
-.s3 .node{border-color:rgba(239,71,111,.14);background:rgba(239,71,111,.03)}.s3 .node:hover{border-color:rgba(239,71,111,.4);box-shadow:0 6px 24px rgba(239,71,111,.1)}.s3 .nt{color:var(--c3)}.s3 .tag.k{background:rgba(239,71,111,.12);border-color:rgba(239,71,111,.25);color:var(--c3)}.s3 .sh{background:rgba(239,71,111,.1);color:var(--c3);border:1px solid rgba(239,71,111,.25)}
-.s4 .node{border-color:rgba(168,85,247,.14);background:rgba(168,85,247,.03)}.s4 .node:hover{border-color:rgba(168,85,247,.4);box-shadow:0 6px 24px rgba(168,85,247,.1)}.s4 .nt{color:var(--c4)}.s4 .tag.k{background:rgba(168,85,247,.12);border-color:rgba(168,85,247,.25);color:var(--c4)}.s4 .sh{background:rgba(168,85,247,.1);color:var(--c4);border:1px solid rgba(168,85,247,.25)}
-.s5 .node{border-color:rgba(249,115,22,.14);background:rgba(249,115,22,.03)}.s5 .node:hover{border-color:rgba(249,115,22,.4);box-shadow:0 6px 24px rgba(249,115,22,.1)}.s5 .nt{color:var(--c5)}.s5 .tag.k{background:rgba(249,115,22,.12);border-color:rgba(249,115,22,.25);color:var(--c5)}.s5 .sh{background:rgba(249,115,22,.1);color:var(--c5);border:1px solid rgba(249,115,22,.25)}
-.s6 .node{border-color:rgba(34,211,238,.14);background:rgba(34,211,238,.03)}.s6 .node:hover{border-color:rgba(34,211,238,.4);box-shadow:0 6px 24px rgba(34,211,238,.1)}.s6 .nt{color:var(--c6)}.s6 .tag.k{background:rgba(34,211,238,.12);border-color:rgba(34,211,238,.25);color:var(--c6)}.s6 .sh{background:rgba(34,211,238,.1);color:var(--c6);border:1px solid rgba(34,211,238,.25)}
-.s7 .node{border-color:rgba(251,146,60,.14);background:rgba(251,146,60,.03)}.s7 .node:hover{border-color:rgba(251,146,60,.4);box-shadow:0 6px 24px rgba(251,146,60,.1)}.s7 .nt{color:var(--c7)}.s7 .tag.k{background:rgba(251,146,60,.12);border-color:rgba(251,146,60,.25);color:var(--c7)}.s7 .sh{background:rgba(251,146,60,.1);color:var(--c7);border:1px solid rgba(251,146,60,.25)}
-.s8 .node{border-color:rgba(74,222,128,.14);background:rgba(74,222,128,.03)}.s8 .node:hover{border-color:rgba(74,222,128,.4);box-shadow:0 6px 24px rgba(74,222,128,.1)}.s8 .nt{color:var(--c8)}.s8 .tag.k{background:rgba(74,222,128,.12);border-color:rgba(74,222,128,.25);color:var(--c8)}.s8 .sh{background:rgba(74,222,128,.1);color:var(--c8);border:1px solid rgba(74,222,128,.25)}
-/* Modal */
-.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:200;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(6px)}
-.ov.open{display:flex}
-.modal{background:#111120;border:1px solid rgba(255,255,255,.1);border-radius:16px;width:100%;max-width:580px;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;animation:pop .2s ease}
-@keyframes pop{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}
-.mhdr{padding:20px 22px 0;display:flex;align-items:flex-start;justify-content:space-between;flex-shrink:0}
-.micon{font-size:1.5rem;margin-bottom:3px}.mtitle{font-size:1.1rem;font-weight:800}
-.msub{font-family:'Space Mono',monospace;font-size:.62rem;color:rgba(255,255,255,.3);margin-top:2px}
-.closebtn{background:none;border:none;color:rgba(255,255,255,.3);font-size:1.1rem;cursor:pointer;padding:4px;margin-left:10px;flex-shrink:0;line-height:1}.closebtn:hover{color:#fff}
-.tabs{display:flex;padding:14px 22px 0;gap:2px;flex-shrink:0;border-bottom:1px solid rgba(255,255,255,.07)}
-.tab{font-family:'Space Mono',monospace;font-size:.6rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:5px 5px 0 0;cursor:pointer;color:rgba(255,255,255,.3);background:none;border:none;border-bottom:2px solid transparent;transition:all .15s;margin-bottom:-1px}
-.tab.active{color:#fff;border-bottom-color:#a78bfa}.tab:hover:not(.active){color:rgba(255,255,255,.6)}
-.mbody{padding:18px 22px;overflow-y:auto;flex:1}
-.tpanel{display:none}.tpanel.active{display:block}
-/* Overview */
-.mdesc{font-size:.83rem;color:#94a3b8;line-height:1.75;margin-bottom:14px}
-.tlist{list-style:none;display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
-.tlist li{font-family:'Space Mono',monospace;font-size:.7rem;color:#94a3b8;padding:5px 10px;border-radius:6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:7px}
-.tlist li::before{content:'→';color:rgba(255,255,255,.2);flex-shrink:0}
-.mbtn{width:100%;margin-top:14px;padding:9px;border-radius:8px;border:none;cursor:pointer;font-family:'Syne',sans-serif;font-weight:700;font-size:.83rem;background:#a78bfa;color:#0a0e1a;transition:all .2s}
-.mbtn:hover{background:#c4b5fd}.mbtn.undone{background:rgba(255,255,255,.06);color:rgba(255,255,255,.4)}
-/* Resources */
-.rlist{display:flex;flex-direction:column;gap:9px}
-.rcard{border-radius:10px;padding:13px 15px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);text-decoration:none;display:block;transition:all .15s}
-.rcard:hover{border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.07)}
-.rtop{display:flex;align-items:center;gap:8px;margin-bottom:3px}
-.rtype{font-family:'Space Mono',monospace;font-size:.56rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:4px;flex-shrink:0}
-.tv{background:rgba(239,71,111,.2);color:#ef476f}.ts{background:rgba(34,211,238,.2);color:#22d3ee}.tp{background:rgba(255,209,102,.2);color:#ffd166}.tc{background:rgba(168,85,247,.2);color:#a855f7}
-.rname{font-size:.83rem;font-weight:700;color:#e2e8f0}.rarr{margin-left:auto;color:rgba(255,255,255,.2);font-size:.9rem}
-.rdesc{font-size:.72rem;color:rgba(255,255,255,.3);margin-top:1px}
-/* Questions */
-.qintro{font-family:'Space Mono',monospace;font-size:.62rem;color:rgba(255,255,255,.3);margin-bottom:14px;line-height:1.7;padding:10px 12px;background:rgba(255,255,255,.03);border-radius:8px;border:1px dashed rgba(255,255,255,.08)}
-.qcard{border-radius:10px;padding:15px;margin-bottom:9px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
-.qhead{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.qnum{font-family:'Space Mono',monospace;font-size:.58rem;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.08);color:rgba(255,255,255,.4);flex-shrink:0}
-.qlvl{font-family:'Space Mono',monospace;font-size:.56rem;padding:2px 7px;border-radius:4px;text-transform:uppercase;letter-spacing:1px}
-.qe{background:rgba(74,222,128,.15);color:#4ade80}.qm{background:rgba(255,209,102,.15);color:#ffd166}.qh{background:rgba(239,71,111,.15);color:#ef476f}
-.qtxt{font-size:.82rem;color:#e2e8f0;line-height:1.65;margin-bottom:10px}
-.qtog{font-family:'Space Mono',monospace;font-size:.6rem;color:rgba(255,255,255,.28);background:none;border:1px dashed rgba(255,255,255,.1);border-radius:5px;padding:4px 10px;cursor:pointer;transition:all .15s;margin-bottom:8px}
-.qtog:hover{border-color:rgba(255,255,255,.25);color:rgba(255,255,255,.5)}
-.qans{display:none;font-family:'Space Mono',monospace;font-size:.7rem;color:#4ade80;padding:8px 10px;border-radius:6px;background:rgba(74,222,128,.07);border:1px solid rgba(74,222,128,.15);line-height:1.65;margin-bottom:10px}
-.qans.show{display:block}
-.qself{display:flex;gap:5px}
-.qrate{flex:1;padding:6px;border-radius:6px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);cursor:pointer;font-size:.64rem;color:rgba(255,255,255,.3);text-align:center;transition:all .15s;font-family:'Space Mono',monospace}
-.qrate:hover{border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.55)}
-.qrate.sb{background:rgba(239,71,111,.15);border-color:rgba(239,71,111,.3);color:#ef476f}
-.qrate.so{background:rgba(255,209,102,.15);border-color:rgba(255,209,102,.3);color:#ffd166}
-.qrate.sg{background:rgba(74,222,128,.15);border-color:rgba(74,222,128,.3);color:#4ade80}
-.lcheck{margin-top:16px;padding:16px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);text-align:center;display:none}
-.lcheck.show{display:block}.lcemoji{font-size:2rem;margin-bottom:6px}
-.lcmsg{font-size:.85rem;font-weight:700;margin-bottom:4px}
-.lcsub{font-family:'Space Mono',monospace;font-size:.62rem;color:rgba(255,255,255,.3);line-height:1.6}
-/* Legend */
-.legend{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;padding:0 20px 48px;max-width:1280px;margin:12px auto 0}
-.li{display:flex;align-items:center;gap:5px;font-family:'Space Mono',monospace;font-size:.56rem;color:rgba(255,255,255,.28);letter-spacing:1px}
-.ld{width:7px;height:7px;border-radius:50%}
-@media(max-width:768px){.r2,.r3,.r4{grid-template-columns:1fr}.stage{flex-direction:column}.slabel{writing-mode:horizontal-tb;min-width:auto}}
-</style>
-</head>
-<body>
-<header>
-  <h1>🧮 Roadmap de Matemática</h1>
-  <p class="subtitle">Do zero absoluto ao cálculo avançado · clique para estudar</p>
-  <div class="pw">
-    <div class="pb-bg"><div class="pb" id="pb"></div></div>
-    <div class="pl" id="pl">0 de 35 tópicos concluídos</div>
-  </div>
-</header>
-<div class="map" id="map"></div>
-<div class="legend" id="legend"></div>
-
-<!-- Modal -->
-<div class="ov" id="ov">
-  <div class="modal">
-    <div class="mhdr">
-      <div class="mtwrap">
-        <div class="micon" id="micon"></div>
-        <div class="mtitle" id="mtitle"></div>
-        <div class="msub" id="msub"></div>
-      </div>
-      <button class="closebtn" id="closebtn">✕</button>
-    </div>
-    <div class="tabs">
-      <button class="tab active" data-tab="overview">📖 Visão Geral</button>
-      <button class="tab" data-tab="resources">🔗 Recursos</button>
-      <button class="tab" data-tab="questions">🎯 Questões</button>
-    </div>
-    <div class="mbody">
-      <div class="tpanel active" id="tab-overview">
-        <p class="mdesc" id="mdesc"></p>
-        <ul class="tlist" id="mlist"></ul>
-        <button class="mbtn" id="mbtn"></button>
-      </div>
-      <div class="tpanel" id="tab-resources">
-        <div class="rlist" id="rlist"></div>
-      </div>
-      <div class="tpanel" id="tab-questions">
-        <div class="qintro">💡 Tente resolver antes de ver a resposta. Avalie sua própria dificuldade — isso calibra se você está pronto pra avançar.</div>
-        <div id="qlist"></div>
-        <div class="lcheck" id="lcheck">
-          <div class="lcemoji" id="lcemoji"></div>
-          <div class="lcmsg" id="lcmsg"></div>
-          <div class="lcsub" id="lcsub"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-const DATA = [
-  {
-    s:'s0',label:'🧱 Fundamentos Absolutos — Literalmente o Zero',
-    nodes:[
-      {id:'n0',icon:'🔢',title:'Números e Contagem',sub:'Naturais, inteiros, zero',
-       tags:[{k:1,t:'Números Naturais ℕ'},{k:0,t:'Linha numérica'},{k:0,t:'Zero e negativo'},{k:0,t:'Comparar/ordenar'},{k:1,t:'Par e ímpar'}],
-       desc:'Tudo começa aqui. Números são a linguagem do universo. Você aprende a nomear quantidades, entender o zero (que demorou milênios pra ser aceito!) e dar nome ao infinito.',
-       topics:['Números naturais (0, 1, 2, 3...)', 'Representação na reta numérica', 'Comparar e ordenar números', 'Conceito de zero — por que ele é revolucionário', 'Par, ímpar e múltiplos'],
-       resources:[
-         {t:'Khan Academy PT','type':'ts',url:'https://pt.khanacademy.org/math/arithmetic',d:'Módulo completo de aritmética básica em português'},
-         {t:'Prof. Ferretto — Números Naturais','type':'tv',url:'https://www.youtube.com/@ProfessorFerretto',d:'Playlist do básico até vestibular, explicação clara'},
-         {t:'OBMEP — Problemas iniciais','type':'tp',url:'https://www.obmep.org.br/banco.htm',d:'Banco de problemas da olimpíada, nível iniciante'}
-       ],
-       questions:[
-         {q:'Escreva todos os números naturais entre 17 e 23 (inclusive).',a:'17, 18, 19, 20, 21, 22, 23 — total de 7 números.',lvl:'e'},
-         {q:'Qual é o menor número natural par maior que 100?',a:'102. (100 já é par, o próximo é 102.)',lvl:'m'},
-         {q:'Se a soma de dois números naturais consecutivos é 2025, quais são eles?',a:'Seja n e n+1: n + n+1 = 2025 → 2n = 2024 → n = 1012. Resposta: 1012 e 1013.',lvl:'h'}
-       ]
-      },
-      {id:'n1',icon:'➕',title:'Operações Básicas',sub:'As 4 operações fundamentais',
-       tags:[{k:1,t:'Adição e subtração'},{k:1,t:'Multiplicação × divisão'},{k:0,t:'Tabuada'},{k:0,t:'Ordem das ops'},{k:0,t:'Propriedades'}],
-       desc:'As 4 operações são o alfabeto da matemática. Toda equação, toda fórmula é uma combinação delas. Dominar a ordem de operação evita 80% dos erros de iniciante.',
-       topics:['Adição e subtração com números grandes', 'Multiplicação: tabuada e algoritmo', 'Divisão com resto', 'Propriedades: comutativa, associativa, distributiva', 'Ordem das operações (parênteses > expoentes > × ÷ > + −)'],
-       resources:[
-         {t:'Khan Academy — Aritmética','type':'ts',url:'https://pt.khanacademy.org/math/arithmetic',d:'Exercícios interativos com feedback imediato'},
-         {t:'Matemática Rio — Operações','type':'tv',url:'https://www.youtube.com/@matematicario',d:'Canal brasileiro com didática excelente'},
-         {t:'Math is Fun','type':'ts',url:'https://www.mathsisfun.com/operation-order-pemdas.html',d:'Explicação visual da ordem das operações'}
-       ],
-       questions:[
-         {q:'Calcule: 3 + 4 × 2 − 1',a:'3 + 8 − 1 = 10. Multiplicação antes da soma/subtração.',lvl:'e'},
-         {q:'Calcule: (12 + 8) ÷ 4 × 3 − 5',a:'(20) ÷ 4 × 3 − 5 = 5 × 3 − 5 = 15 − 5 = 10.',lvl:'m'},
-         {q:'Quanto é 7 × (3 + 2²) − 4 ÷ (6 − 4)?',a:'7 × (3 + 4) − 4 ÷ 2 = 7 × 7 − 2 = 49 − 2 = 47.',lvl:'h'}
-       ]
-      },
-      {id:'n2',icon:'🧩',title:'Frações e Decimais',sub:'Partes do todo',
-       tags:[{k:1,t:'Numerador / denominador'},{k:1,t:'Equivalência'},{k:0,t:'Op. com frações'},{k:0,t:'Decimais'},{k:1,t:'Porcentagem %'}],
-       desc:'Frações existem porque o mundo não é inteiro. O conceito de "parte por inteiro" abre a porta para racionais, probabilidade e praticamente tudo que vem depois.',
-       topics:['Fração: numerador e denominador', 'Frações equivalentes e simplificação', 'MMC para somar frações', 'Decimais: relação com potências de 10', 'Porcentagem: "por cento" = /100'],
-       resources:[
-         {t:'Khan Academy — Frações','type':'ts',url:'https://pt.khanacademy.org/math/arithmetic/fractions',d:'Curso completo com exercícios adaptativos'},
-         {t:'Prof. Ferretto — Frações','type':'tv',url:'https://www.youtube.com/@ProfessorFerretto',d:'Playlist frações do zero, muito bem explicado'},
-         {t:'Mathway','type':'ts',url:'https://www.mathway.com',d:'Resolve passo a passo — use para checar seus cálculos'}
-       ],
-       questions:[
-         {q:'Simplifique a fração 18/24.',a:'MDC(18,24) = 6. Dividindo: 18÷6 / 24÷6 = 3/4.',lvl:'e'},
-         {q:'Calcule: 2/3 + 3/4.',a:'MMC(3,4)=12. → 8/12 + 9/12 = 17/12 = 1 e 5/12.',lvl:'m'},
-         {q:'Uma loja deu 15% de desconto num produto de R$240. Qual o preço final?',a:'Desconto: 240 × 0,15 = 36. Final: 240 − 36 = R$204,00.',lvl:'h'}
-       ]
-      }
-    ]
-  },
-  {
-    s:'s1',label:'🔣 Álgebra Fundamental',
-    nodes:[
-      {id:'n3',icon:'⚡',title:'Potenciação e Radiciação',sub:'Multiplicação repetida',
-       tags:[{k:1,t:'Potências inteiras'},{k:1,t:'Raiz quadrada/cúbica'},{k:0,t:'Propriedades'},{k:0,t:'Irracionais √2'},{k:0,t:'Notação científica'}],
-       desc:'Potência é um atalho para multiplicação repetida. 2¹⁰ = 1024. Raiz é a operação inversa. Essas operações aparecem em crescimento exponencial, notação científica e álgebra.',
-       topics:['Definição de aⁿ', 'Propriedades: aᵐ × aⁿ = aᵐ⁺ⁿ, (aᵐ)ⁿ = aᵐⁿ', 'Raiz quadrada exata e irracional', 'Notação científica: 3 × 10⁸', 'Potências negativas e fracionárias'],
-       resources:[
-         {t:'Khan Academy — Potências','type':'ts',url:'https://pt.khanacademy.org/math/pre-algebra/pre-algebra-exponents-radicals',d:'Módulo completo com vídeos e exercícios'},
-         {t:'3Blue1Brown — Exponentials','type':'tv',url:'https://www.youtube.com/@3blue1brown',d:'Intuição visual ímpar (em inglês, mas vale cada segundo)'},
-         {t:'OBMEP Nível 1','type':'tp',url:'https://www.obmep.org.br/banco.htm',d:'Problemas com potências para nível iniciante'}
-       ],
-       questions:[
-         {q:'Calcule 2⁵ + 3³.',a:'32 + 27 = 59.',lvl:'e'},
-         {q:'Simplifique: (2³ × 2⁴) ÷ 2⁵.',a:'2^(3+4) ÷ 2⁵ = 2⁷ ÷ 2⁵ = 2² = 4.',lvl:'m'},
-         {q:'Se 2ˣ = 128, quanto vale x?',a:'128 = 2⁷, logo x = 7.',lvl:'h'}
-       ]
-      },
-      {id:'n4',icon:'🔗',title:'Divisibilidade e Primos',sub:'Os átomos dos números',
-       tags:[{k:1,t:'Números primos'},{k:1,t:'Fatoração'},{k:1,t:'MMC e MDC'},{k:0,t:'Crivo de Eratóstenes'},{k:0,t:'Critérios div.'}],
-       desc:'Todo número inteiro é um produto único de primos — isso é o Teorema Fundamental da Aritmética. O Crivo de Eratóstenes é um dos algoritmos mais antigos da história (276 a.C.).',
-       topics:['Critérios de divisibilidade por 2, 3, 5, 7, 11', 'Números primos e compostos', 'Fatoração em primos', 'MMC: mínimo múltiplo comum', 'MDC: máximo divisor comum'],
-       resources:[
-         {t:'Khan Academy — Primos','type':'ts',url:'https://pt.khanacademy.org/math/pre-algebra/pre-algebra-factors-multiples',d:'Do básico ao MMC/MDC com exercícios'},
-         {t:'Numberphile — Prime Numbers','type':'tv',url:'https://www.youtube.com/@numberphile',d:'Canal fantástico sobre números primos (inglês)'},
-         {t:'Brasil Escola — Divisibilidade','type':'ts',url:'https://brasilescola.uol.com.br/matematica/criterios-de-divisibilidade.htm',d:'Artigo completo em português com exemplos'}
-       ],
-       questions:[
-         {q:'O número 2025 é divisível por 5? Por 9?',a:'Por 5: termina em 5 → Sim. Por 9: 2+0+2+5=9 → Sim.',lvl:'e'},
-         {q:'Calcule o MMC de 12, 18 e 30.',a:'12=2²×3 | 18=2×3² | 30=2×3×5. MMC=2²×3²×5=180.',lvl:'m'},
-         {q:'Quantos divisores tem o número 360?',a:'360=2³×3²×5. Divisores=(3+1)(2+1)(1+1)=4×3×2=24.',lvl:'h'}
-       ]
-      },
-      {id:'n5',icon:'🔤',title:'Variáveis e Álgebra Básica',sub:'Letras em vez de números',
-       tags:[{k:1,t:'Expressões algébricas'},{k:1,t:'Equação 1° grau'},{k:0,t:'Polinômios'},{k:0,t:'Fatoração'},{k:1,t:'Produtos notáveis'}],
-       desc:'Uma variável é um número que você ainda não sabe. A álgebra é a arte de trabalhar com o desconhecido — e é o que separa aritmética de matemática de verdade.',
-       topics:['Variáveis e expressões algébricas', 'Simplificação de expressões (termos semelhantes)', 'Produtos notáveis: (a+b)², (a−b)², (a+b)(a−b)', 'Fatoração: fator comum, agrupamento', 'Equações do 1° grau — princípio da balança'],
-       resources:[
-         {t:'Khan Academy — Álgebra','type':'ts',url:'https://pt.khanacademy.org/math/algebra',d:'Curso completo de álgebra do básico ao avançado'},
-         {t:'Prof. Ferretto — Equações 1° grau','type':'tv',url:'https://www.youtube.com/@ProfessorFerretto',d:'Playlist equações do 1° grau com muitos exemplos'},
-         {t:'Paul\'s Math Notes — Algebra','type':'ts',url:'https://tutorial.math.lamar.edu/Classes/Alg/Alg.aspx',d:'Referência técnica completa (inglês)'}
-       ],
-       questions:[
-         {q:'Resolva: 3x − 7 = 14.',a:'3x = 21 → x = 7.',lvl:'e'},
-         {q:'Expanda e simplifique: (x + 3)².',a:'x² + 6x + 9.',lvl:'m'},
-         {q:'Resolva: (2x−1)/3 + (x+2)/4 = 3.',a:'MMC=12: 4(2x−1) + 3(x+2) = 36 → 8x−4+3x+6=36 → 11x=34 → x=34/11.',lvl:'h'}
-       ]
-      }
-    ]
-  },
-  {
-    s:'s2',label:'📏 Geometria',
-    nodes:[
-      {id:'n6',icon:'📐',title:'Geometria Plana',sub:'Figuras em 2D',
-       tags:[{k:1,t:'Teorema de Pitágoras'},{k:1,t:'Áreas e perímetros'},{k:0,t:'Ângulos'},{k:0,t:'Triângulos'},{k:0,t:'Semelhança'}],
-       desc:'Pitágoras descobriu que a² + b² = c² em todo triângulo retângulo. Esse único teorema é a base da engenharia, arquitetura e GPS. E tem mais de 370 demonstrações diferentes.',
-       topics:['Ponto, reta, plano e ângulos', 'Triângulos: tipos, propriedades, Pitágoras', 'Quadriláteros: áreas e perímetros', 'Círculo: área = πr², comprimento = 2πr', 'Semelhança de figuras e escalas'],
-       resources:[
-         {t:'Khan Academy — Geometria','type':'ts',url:'https://pt.khanacademy.org/math/geometry',d:'Módulo completo com demonstrações interativas'},
-         {t:'GeoGebra','type':'ts',url:'https://www.geogebra.org',d:'Ferramenta visual gratuita para explorar geometria'},
-         {t:'Prof. Ferretto — Geometria Plana','type':'tv',url:'https://www.youtube.com/@ProfessorFerretto',d:'Playlist geometria plana com foco em ENEM/vestibular'}
-       ],
-       questions:[
-         {q:'Um triângulo retângulo tem catetos de 6 e 8. Qual a hipotenusa?',a:'c = √(36+64) = √100 = 10.',lvl:'e'},
-         {q:'Calcule a área de um trapézio com bases 8 e 12, altura 5.',a:'A = (B+b)/2 × h = (12+8)/2 × 5 = 10 × 5 = 50.',lvl:'m'},
-         {q:'Um círculo tem área 100π. Qual o comprimento de um arco de 90°?',a:'r²π=100π → r=10. Arco 90°= 1/4 do total = 2π×10/4 = 5π.',lvl:'h'}
-       ]
-      },
-      {id:'n7',icon:'🗺️',title:'Geometria Analítica',sub:'Álgebra encontra geometria',
-       tags:[{k:1,t:'Plano cartesiano'},{k:1,t:'Equação da reta'},{k:0,t:'Distância entre pontos'},{k:0,t:'Cônicas'},{k:0,t:'Circunferência'}],
-       desc:'Descartes teve essa ideia brilhante enquanto observava uma mosca no teto: e se descrevermos posições com números? Isso uniu álgebra e geometria para sempre.',
-       topics:['Sistema de coordenadas (x,y)', 'Distância entre dois pontos', 'Equação da reta: y = ax + b', 'Coeficiente angular e linear', 'Equação da circunferência'],
-       resources:[
-         {t:'Khan Academy — Analítica','type':'ts',url:'https://pt.khanacademy.org/math/geometry/hs-geo-analytic-geometry',d:'Geometria analítica com exercícios graduados'},
-         {t:'GeoGebra Graphing','type':'ts',url:'https://www.geogebra.org/graphing',d:'Plote qualquer equação instantaneamente — gratuito'},
-         {t:'Desmos','type':'ts',url:'https://www.desmos.com/calculator',d:'Calculadora gráfica online, interface linda'}
-       ],
-       questions:[
-         {q:'Calcule a distância entre os pontos A(1,2) e B(4,6).',a:'d = √((4−1)²+(6−2)²) = √(9+16) = √25 = 5.',lvl:'e'},
-         {q:'Qual a equação da reta que passa por (0,3) e tem coef. angular 2?',a:'y = 2x + 3.',lvl:'m'},
-         {q:'Ache os pontos de interseção de y=x² e y=x+2.',a:'x²=x+2 → x²−x−2=0 → (x−2)(x+1)=0 → x=2 ou x=−1. Pontos: (2,4) e (−1,1).',lvl:'h'}
-       ]
-      },
-      {id:'n8',icon:'📡',title:'Trigonometria Básica',sub:'Seno, cosseno, tangente',
-       tags:[{k:1,t:'sen, cos, tg'},{k:1,t:'Triângulo retângulo'},{k:0,t:'Ângulos notáveis'},{k:0,t:'Lei dos senos'},{k:0,t:'Lei dos cossenos'}],
-       desc:'Trigonometria nasceu para medir o inatingível — a altura de uma montanha, a distância até a Lua. "soh-cah-toa" é um mnemônico que funciona de verdade.',
-       topics:['Razões trig no triângulo retângulo: sen=op/hip', 'Ângulos notáveis: 30°, 45°, 60°', 'Identidade fundamental: sen²θ + cos²θ = 1', 'Lei dos senos: a/senA = b/senB = c/senC', 'Lei dos cossenos: c² = a² + b² − 2ab·cosC'],
-       resources:[
-         {t:'Khan Academy — Trigonometria','type':'ts',url:'https://pt.khanacademy.org/math/trigonometry',d:'Curso completo com visualizações interativas'},
-         {t:'3Blue1Brown — Trig','type':'tv',url:'https://www.youtube.com/watch?v=yBw67Fb31Cs',d:'Intuição visual da trigonometria (inglês)'},
-         {t:'Prof. Ferretto — Trig','type':'tv',url:'https://www.youtube.com/@ProfessorFerretto',d:'Playlist trigonometria completa para vestibular'}
-       ],
-       questions:[
-         {q:'Num triângulo retângulo, se o cateto oposto a 30° mede 5, qual a hipotenusa?',a:'sen30° = 1/2. Então 5/h = 1/2 → h = 10.',lvl:'e'},
-         {q:'Calcule sen(45°) + cos(60°).',a:'√2/2 + 1/2 = (√2 + 1)/2 ≈ 1,207.',lvl:'m'},
-         {q:'Num triângulo com a=7, b=5, C=60°, calcule o lado c.',a:'c² = 49+25−2×7×5×cos60° = 74−35 = 39 → c = √39.',lvl:'h'}
-       ]
-      }
-    ]
-  },
-  {
-    s:'s3',label:'📈 Funções — O coração da matemática',
-    nodes:[
-      {id:'n9',icon:'🔗',title:'Funções e Gráficos',sub:'Entrada → Saída',
-       tags:[{k:1,t:'Domínio e imagem'},{k:1,t:'f(x): notação'},{k:0,t:'Função injetora'},{k:0,t:'Composição'},{k:1,t:'Função inversa'}],
-       desc:'Função é uma máquina: entra x, sai f(x). Temperatura, crescimento populacional, preço por quantidade — tudo que relaciona duas grandezas é uma função.',
-       topics:['Relação vs. Função — a diferença importa', 'Domínio, contradomínio e imagem', 'Função injetora, sobrejetora, bijetora', 'Composição: f(g(x))', 'Função inversa f⁻¹'],
-       resources:[
-         {t:'Khan Academy — Funções','type':'ts',url:'https://pt.khanacademy.org/math/algebra/x2f8bb11595b61c86:functions',d:'Módulo completo de funções com exercícios'},
-         {t:'Desmos','type':'ts',url:'https://www.desmos.com/calculator',d:'Plote qualquer função e explore visualmente'},
-         {t:'Prof. Ferretto — Funções','type':'tv',url:'https://www.youtube.com/@ProfessorFerretto',d:'Playlist funções do conceito ao avançado'}
-       ],
-       questions:[
-         {q:'Se f(x) = 2x − 1, calcule f(3) e f(−2).',a:'f(3)=5, f(−2)=−5.',lvl:'e'},
-         {q:'A função f(x) = x² − 4x + 3. Para quais x temos f(x) = 0?',a:'x²−4x+3=0 → (x−1)(x−3)=0 → x=1 ou x=3.',lvl:'m'},
-         {q:'Se f(x)=2x+1 e g(x)=x², calcule g(f(−1)).',a:'f(−1)=−1. g(−1)=(−1)²=1.',lvl:'h'}
-       ]
-      },
-      {id:'n10',icon:'💹',title:'Funções Exponenciais e Logarítmicas',sub:'Crescimento e escala',
-       tags:[{k:1,t:'f(x) = aˣ'},{k:1,t:'log e ln'},{k:0,t:'Propriedades do log'},{k:0,t:'Número e'},{k:0,t:'Eq. exponenciais'}],
-       desc:'Exponencial descreve vírus, dívidas e explosões nucleares. Logaritmo é o inverso. A escala Richter de terremotos? Logarítmica. O pH da água? Logarítmico. Estão em todo lugar.',
-       topics:['f(x) = aˣ — crescimento vs decrescimento', 'Número de Euler: e ≈ 2,71828...', 'Definição de logaritmo: logₐ(b) = c ⟺ aᶜ = b', 'Propriedades: log(ab), log(a/b), log(aⁿ)', 'Equações exponenciais e logarítmicas'],
-       resources:[
-         {t:'Khan Academy — Exp & Log','type':'ts',url:'https://pt.khanacademy.org/math/algebra2/x2ec2f6f830c9fb89:logs',d:'Módulo completo de logaritmos com exercícios'},
-         {t:'3Blue1Brown — e e o número natural','type':'tv',url:'https://www.youtube.com/watch?v=m2MIpDrF7Es',d:'Por que e é tão especial — visualização perfeita'},
-         {t:'Wolfram Alpha','type':'ts',url:'https://www.wolframalpha.com',d:'Resolva e visualize qualquer equação exponencial'}
-       ],
-       questions:[
-         {q:'Calcule log₂(32).',a:'2⁵ = 32 → log₂(32) = 5.',lvl:'e'},
-         {q:'Resolva: 3^(x+1) = 27.',a:'27=3³ → x+1=3 → x=2.',lvl:'m'},
-         {q:'Simplifique: log(500) + log(2) − log(10).',a:'log(500×2) − log(10) = log(1000) − 1 = 3 − 1 = 2.',lvl:'h'}
-       ]
-      }
-    ]
-  },
-  {
-    s:'s4',label:'🎲 Combinatória, PA, PG e Estatística',
-    nodes:[
-      {id:'n11',icon:'📊',title:'Progressões PA e PG',sub:'Sequências com padrão',
-       tags:[{k:1,t:'PA — razão constante'},{k:1,t:'PG — razão multiplicativa'},{k:0,t:'Soma dos termos'},{k:0,t:'Juros compostos'},{k:0,t:'Série geométrica ∞'}],
-       desc:'PA tem diferença constante entre termos (1, 4, 7, 10...). PG tem razão constante (1, 2, 4, 8, 16...). Juros compostos é uma PG — e isso explica como dívidas explodem.',
-       topics:['PA: termo geral aₙ = a₁ + (n−1)r', 'PG: termo geral aₙ = a₁ × qⁿ⁻¹', 'Soma dos termos de uma PA', 'Soma dos termos de uma PG finita', 'PG infinita convergente: S = a₁/(1−q)'],
-       resources:[
-         {t:'Khan Academy — Sequências','type':'ts',url:'https://pt.khanacademy.org/math/algebra/x2f8bb11595b61c86:sequences',d:'Sequências e séries do básico ao intermediário'},
-         {t:'Prof. Ferretto — PA e PG','type':'tv',url:'https://www.youtube.com/@ProfessorFerretto',d:'Playlist completa com questões de vestibular'},
-         {t:'OBMEP — Problemas de sequências','type':'tp',url:'https://www.obmep.org.br/banco.htm',d:'Problemas selecionados de olimpíada'}
-       ],
-       questions:[
-         {q:'Qual o 10° termo da PA: 3, 7, 11, ...?',a:'r=4. a₁₀ = 3 + 9×4 = 3 + 36 = 39.',lvl:'e'},
-         {q:'A soma dos 5 primeiros termos de uma PG de razão 2 e a₁=3 é?',a:'S = 3×(2⁵−1)/(2−1) = 3×31 = 93.',lvl:'m'},
-         {q:'Um capital de R$1000 é aplicado a 10% ao mês (juros compostos). Quanto terá após 3 meses?',a:'M = 1000 × (1,10)³ = 1000 × 1,331 = R$1.331,00.',lvl:'h'}
-       ]
-      },
-      {id:'n12',icon:'🎯',title:'Combinatória e Probabilidade',sub:'Contar sem listar',
-       tags:[{k:1,t:'Permutação'},{k:1,t:'Combinação C(n,k)'},{k:0,t:'Binômio de Newton'},{k:1,t:'P(A) = fav/total'},{k:0,t:'Probabilidade cond.'}],
-       desc:'Quantas senhas de 6 dígitos existem? Quantas mãos de poker? Combinatória responde sem precisar listar. Probabilidade quantifica o acaso com matemática precisa.',
-       topics:['Princípio Fundamental da Contagem', 'Permutações: n! / (n−r)!', 'Combinações: C(n,k) = n! / k!(n−k)!', 'Binômio de Newton', 'Probabilidade: P(A), P(A∪B), P(A|B)'],
-       resources:[
-         {t:'Khan Academy — Probabilidade','type':'ts',url:'https://pt.khanacademy.org/math/statistics-probability/probability-library',d:'Módulo de probabilidade do básico ao avançado'},
-         {t:'3Blue1Brown — Probabilidade','type':'tv',url:'https://www.youtube.com/watch?v=HZGCoVF3YvM',d:'Série visual sobre probabilidade e Bayes (inglês)'},
-         {t:'Prof. Ferretto — Combinatória','type':'tv',url:'https://www.youtube.com/@ProfessorFerretto',d:'Permutação, arranjo e combinação para vestibular'}
-       ],
-       questions:[
-         {q:'De quantas formas podemos escolher 3 alunos de uma turma de 10?',a:'C(10,3) = 10!/(3!×7!) = 120.',lvl:'e'},
-         {q:'Num baralho de 52 cartas, qual a probabilidade de tirar um Ás?',a:'4/52 = 1/13 ≈ 7,7%.',lvl:'m'},
-         {q:'Numa sala com 20 pessoas, qual a probabilidade de pelo menos 2 fazerem aniversário no mesmo dia?',a:'P(todas dif.) = (365×364×...×346)/365²⁰. P(≥2 iguais) = 1 − P(todas dif.) ≈ 41%. (Paradoxo do aniversário!)',lvl:'h'}
-       ]
-      }
-    ]
-  },
-  {
-    s:'s5',label:'🌀 Pré-Cálculo — A transição',
-    nodes:[
-      {id:'n13',icon:'⭕',title:'Trigonometria Avançada',sub:'Círculo trigonométrico e identidades',
-       tags:[{k:1,t:'Círculo unitário'},{k:1,t:'Radianos'},{k:0,t:'Identidades'},{k:0,t:'Fórmulas de adição'},{k:0,t:'Eq. trigonométricas'}],
-       desc:'No círculo unitário, seno e cosseno são coordenadas de um ponto. Isso unifica tudo: ondas de rádio, som, luz elétrica — tudo é descrito por sen(x) e cos(x).',
-       topics:['Radiano: π rad = 180°', 'Círculo unitário e valores fundamentais', 'Identidades: sen²x+cos²x=1, tg=sen/cos', 'Fórmulas de adição: sen(a+b), cos(a+b)', 'Equações trigonométricas e soluções gerais'],
-       resources:[
-         {t:'Khan Academy — Trigonometria Avançada','type':'ts',url:'https://pt.khanacademy.org/math/trigonometry',d:'Círculo trigonométrico e identidades completas'},
-         {t:'3Blue1Brown — Euler\'s Formula','type':'tv',url:'https://www.youtube.com/watch?v=v0YEaeIClKY',d:'eⁱˣ = cos x + i sen x — a equação mais bonita da matemática'},
-         {t:'Desmos — Trig Explorer','type':'ts',url:'https://www.desmos.com/calculator/oy7pdhtl0l',d:'Explore graficamente qualquer função trigonométrica'}
-       ],
-       questions:[
-         {q:'Converta 270° em radianos.',a:'270° × π/180 = 3π/2 rad.',lvl:'e'},
-         {q:'Prove que sen(2x) = 2·sen(x)·cos(x).',a:'sen(x+x) = sen(x)cos(x)+cos(x)sen(x) = 2·sen(x)·cos(x). ✓',lvl:'m'},
-         {q:'Resolva: 2cos²(x) − 1 = 0, com x ∈ [0°, 360°).',a:'cos²(x)=1/2 → cos(x)=±√2/2 → x=45°, 135°, 225°, 315°.',lvl:'h'}
-       ]
-      },
-      {id:'n14',icon:'🔮',title:'Números Complexos',sub:'A raiz de −1 existe!',
-       tags:[{k:1,t:'i = √−1'},{k:1,t:'Forma a+bi'},{k:0,t:'Plano de Argand'},{k:0,t:'Módulo e argumento'},{k:0,t:'Fórmula de Euler'}],
-       desc:'i = √(−1) parece absurdo, mas números complexos são a base da engenharia elétrica, mecânica quântica e processamento de sinais. São talvez a extensão matemática mais útil já inventada.',
-       topics:['Definição de i: i² = −1', 'Forma algébrica: a + bi', 'Operações com complexos', 'Plano de Argand: representação gráfica', 'Fórmula de Euler: eⁱˣ = cos(x) + i·sen(x)'],
-       resources:[
-         {t:'Khan Academy — Complexos','type':'ts',url:'https://pt.khanacademy.org/math/precalculus/x9e81a4f98389efdf:complex',d:'Números complexos do zero ao avançado'},
-         {t:'3Blue1Brown — Complexos','type':'tv',url:'https://www.youtube.com/watch?v=5PcpBw5Hbwo',d:'Visualização geométrica dos complexos'},
-         {t:'Wolfram Alpha — Complexos','type':'ts',url:'https://www.wolframalpha.com',d:'Compute e visualize operações com números complexos'}
-       ],
-       questions:[
-         {q:'Calcule (2+3i) + (1−i).',a:'(2+1) + (3−1)i = 3 + 2i.',lvl:'e'},
-         {q:'Calcule (1+i)².',a:'1 + 2i + i² = 1 + 2i − 1 = 2i.',lvl:'m'},
-         {q:'Qual o módulo e argumento de z = −1 + i?',a:'|z| = √(1+1) = √2. arg(z) = arctan(1/−1) no 2° quad = 135° = 3π/4.',lvl:'h'}
-       ]
-      },
-      {id:'n15',icon:'∞',title:'Limites — Intuição',sub:'O que acontece quando x → a',
-       tags:[{k:1,t:'lim x→a f(x)'},{k:0,t:'Limites laterais'},{k:1,t:'Continuidade'},{k:0,t:'Formas 0/0'},{k:0,t:'Limite no infinito'}],
-       desc:'Limite é perguntar: pra onde vai f(x) enquanto x se aproxima de algo? Newton e Leibniz inventaram o Cálculo para descrever movimento — o limite é a fundação desse edifício.',
-       topics:['Conceito intuitivo de limite', 'Limites laterais: lim⁺ e lim⁻', 'Continuidade: quando o limite = valor da função', 'Formas indeterminadas: 0/0, ∞/∞', 'Limite no infinito: comportamento assintótico'],
-       resources:[
-         {t:'Khan Academy — Limites','type':'ts',url:'https://pt.khanacademy.org/math/ap-calculus-ab/ab-limits-new',d:'Módulo completo de limites com visualizações'},
-         {t:'3Blue1Brown — Essence of Calculus','type':'tv',url:'https://www.youtube.com/watch?v=WUvTyaaNkzM',d:'Episódio 1: a essência do cálculo (inglês)'},
-         {t:'Paul\'s Math Notes — Limits','type':'ts',url:'https://tutorial.math.lamar.edu/Classes/CalcI/CalcI.aspx',d:'Referência técnica completa sobre limites (inglês)'}
-       ],
-       questions:[
-         {q:'Calcule: lim (x→3) de (x² − 9)/(x − 3).',a:'Fatorando: (x+3)(x−3)/(x−3) = x+3. Quando x→3: 3+3 = 6.',lvl:'e'},
-         {q:'Calcule: lim (x→∞) de (3x² + 2x)/(x² − 1).',a:'Dividindo tudo por x²: (3 + 2/x)/(1 − 1/x²) → 3/1 = 3.',lvl:'m'},
-         {q:'A função f(x) = (sen x)/x quando x→0 vale quanto? (sem L\'Hôpital)',a:'Usando o limite fundamental: lim(x→0) sen(x)/x = 1. (Demonstrável geometricamente pelo Teorema do Confronto.)',lvl:'h'}
-       ]
-      }
-    ]
-  },
-  {
-    s:'s6',label:'🚀 Cálculo — Onde tudo se conecta',
-    nodes:[
-      {id:'n16',icon:'📉',title:'Derivadas',sub:'Taxa de variação instantânea',
-       tags:[{k:1,t:'f\'(x) = inclinação'},{k:0,t:'Regras de derivação'},{k:1,t:'Regra da cadeia'},{k:0,t:'Máximos e mínimos'},{k:0,t:'Otimização'}],
-       desc:'Derivada é a inclinação da curva num ponto específico. Velocidade é derivada da posição. Aceleração é derivada da velocidade. A física inteira é escrita com derivadas.',
-       topics:['Definição via limite: f\'(x) = lim Δy/Δx', 'Regras: potência, produto, quociente', 'Regra da cadeia: d/dx[f(g(x))]', 'Derivadas de sen, cos, eˣ, ln(x)', 'Máximos e mínimos: f\'(x) = 0'],
-       resources:[
-         {t:'Khan Academy — Derivadas','type':'ts',url:'https://pt.khanacademy.org/math/ap-calculus-ab/ab-differentiation-1-new',d:'Curso completo de derivadas com exercícios'},
-         {t:'3Blue1Brown — Derivatives','type':'tv',url:'https://www.youtube.com/watch?v=9vKqVkMQHKk',d:'Essência das derivadas — visualização geométrica perfeita'},
-         {t:'Paul\'s Math Notes — Derivatives','type':'ts',url:'https://tutorial.math.lamar.edu/Classes/CalcI/DerivativeIntro.aspx',d:'Referência técnica completa com exemplos detalhados'}
-       ],
-       questions:[
-         {q:'Calcule a derivada de f(x) = x³ + 2x.',a:'f\'(x) = 3x² + 2.',lvl:'e'},
-         {q:'Derive f(x) = sen(x²).',a:'Regra da cadeia: f\'(x) = cos(x²) × 2x = 2x·cos(x²).',lvl:'m'},
-         {q:'Encontre os pontos críticos de f(x) = x³ − 3x + 2.',a:'f\'(x) = 3x²−3 = 0 → x²=1 → x=1 ou x=−1. f(1)=0 (mín. local), f(−1)=4 (máx. local).',lvl:'h'}
-       ]
-      },
-      {id:'n17',icon:'📈',title:'Integrais',sub:'Área sob a curva',
-       tags:[{k:1,t:'∫ f(x) dx'},{k:1,t:'Teorema Fundamental'},{k:0,t:'Int. por substituição'},{k:0,t:'Int. por partes'},{k:0,t:'Área entre curvas'}],
-       desc:'Integral é a operação inversa da derivada — isso é o Teorema Fundamental do Cálculo, uma das descobertas mais poderosas da história humana. Com ela você calcula área, volume, trabalho e probabilidade.',
-       topics:['Integral como acumulação de área', 'Antiderivada e integral indefinida', 'Teorema Fundamental do Cálculo', 'Técnicas: substituição simples', 'Integração por partes: ∫u dv'],
-       resources:[
-         {t:'Khan Academy — Integrais','type':'ts',url:'https://pt.khanacademy.org/math/ap-calculus-ab/ab-integration-new',d:'Módulo completo de integração'},
-         {t:'3Blue1Brown — Integrals','type':'tv',url:'https://www.youtube.com/watch?v=rfG8ce4nNh0',d:'Essência das integrais — intuição visual irresistível'},
-         {t:'Integral Calculator','type':'ts',url:'https://www.integral-calculator.com',d:'Calcula passo a passo com explicação visual'}
-       ],
-       questions:[
-         {q:'Calcule ∫(3x² + 2x)dx.',a:'x³ + x² + C.',lvl:'e'},
-         {q:'Calcule ∫₀² (x² + 1)dx.',a:'[x³/3 + x]₀² = (8/3+2) − 0 = 8/3 + 6/3 = 14/3.',lvl:'m'},
-         {q:'Calcule ∫ x·eˣ dx.',a:'Integração por partes: u=x, dv=eˣdx. → x·eˣ − ∫eˣdx = x·eˣ − eˣ + C = eˣ(x−1)+C.',lvl:'h'}
-       ]
-      },
-      {id:'n18',icon:'〽️',title:'Equações Diferenciais',sub:'Equações com derivadas',
-       tags:[{k:1,t:'EDO 1ª ordem'},{k:0,t:'Sep. de variáveis'},{k:1,t:'EDO linear'},{k:0,t:'Modelos populacionais'},{k:0,t:'Transformada de Laplace'}],
-       desc:'A física do universo é escrita em equações diferenciais. F=ma é uma EDO. Crescimento de bactérias, circuitos elétricos, difusão de calor, mercado financeiro — tudo.',
-       topics:['O que é uma EDO: y\' = f(x,y)', 'Separação de variáveis', 'EDO linear de 1ª ordem: y\' + P(x)y = Q(x)', 'Modelo de Malthus: dP/dt = rP', 'Transformada de Laplace (introdução)'],
-       resources:[
-         {t:'Khan Academy — EDOs','type':'ts',url:'https://pt.khanacademy.org/math/differential-equations',d:'Equações diferenciais do básico ao intermediário'},
-         {t:'3Blue1Brown — EDOs','type':'tv',url:'https://www.youtube.com/watch?v=p_di4Zn4wz4',d:'Visualização das equações diferenciais — imperdível'},
-         {t:'MIT OCW — Differential Equations','type':'ts',url:'https://ocw.mit.edu/courses/18-03sc-differential-equations-fall-2011/',d:'Curso completo do MIT gratuito (inglês)'}
-       ],
-       questions:[
-         {q:'Resolva: dy/dx = 2x.',a:'dy = 2x dx → ∫dy = ∫2x dx → y = x² + C.',lvl:'e'},
-         {q:'Resolva a EDO separável: dy/dx = y.',a:'dy/y = dx → ln|y| = x + C → y = Aeˣ.',lvl:'m'},
-         {q:'Uma população cresce a 5% ao ano. Se P(0)=1000, quando chega a 2000?',a:'P(t)=1000e^(0,05t)=2000 → e^(0,05t)=2 → t=ln(2)/0,05 ≈ 13,86 anos.',lvl:'h'}
-       ]
-      }
-    ]
-  },
-  {
-    s:'s7',label:'🔷 Álgebra Linear',
-    nodes:[
-      {id:'n19',icon:'➡️',title:'Vetores e Matrizes',sub:'A linguagem da transformação',
-       tags:[{k:1,t:'Vetores em ℝⁿ'},{k:1,t:'Matrizes e op.'},{k:0,t:'Determinante'},{k:0,t:'Matriz inversa'},{k:1,t:'Produto escalar'}],
-       desc:'Vetores têm magnitude e direção. Matrizes organizam sistemas inteiros. São a base da computação gráfica, de qualquer engine de jogo e de toda rede neural de IA.',
-       topics:['Vetores: soma, escalar, produto escalar', 'Produto vetorial (cross product) em ℝ³', 'Matrizes: definição, soma, multiplicação', 'Determinante e interpretação geométrica', 'Matriz inversa e sistemas lineares'],
-       resources:[
-         {t:'3Blue1Brown — Linear Algebra','type':'tv',url:'https://www.youtube.com/watch?v=fNk_zzaMoSs&list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab',d:'A melhor série de álgebra linear já feita — visual e intuitiva (inglês)'},
-         {t:'Khan Academy — Álgebra Linear','type':'ts',url:'https://pt.khanacademy.org/math/linear-algebra',d:'Curso completo com exercícios'},
-         {t:'MIT OCW — Linear Algebra','type':'ts',url:'https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/',d:'Gilbert Strang — o professor lendário de álgebra linear do MIT'}
-       ],
-       questions:[
-         {q:'Calcule o determinante de [[2,3],[1,4]].',a:'det = 2×4 − 3×1 = 8 − 3 = 5.',lvl:'e'},
-         {q:'Multiplique A=[1,2;3,4] por B=[2,0;1,3].',a:'AB = [1×2+2×1, 1×0+2×3; 3×2+4×1, 3×0+4×3] = [4,6;10,12].',lvl:'m'},
-         {q:'Encontre a inversa de A=[2,1;5,3].',a:'det(A)=2×3−1×5=1. A⁻¹=(1/1)×[3,−1;−5,2]=[3,−1;−5,2].',lvl:'h'}
-       ]
-      },
-      {id:'n20',icon:'🔁',title:'Espaços Vetoriais e Autovalores',sub:'Estrutura e transformação',
-       tags:[{k:1,t:'Base e dimensão'},{k:0,t:'Ind. linear'},{k:1,t:'Autovalores λ'},{k:0,t:'Diagonalização'},{k:0,t:'PCA / SVD'}],
-       desc:'Autovetores são as direções que uma transformação linear não "vira" — só estica. Google PageRank é um autovetor. PCA em machine learning é autovetores. São onipresentes.',
-       topics:['Espaço vetorial: axiomas e exemplos', 'Dependência/independência linear', 'Base e dimensão de um espaço', 'Autovalores e autovetores: Av = λv', 'Diagonalização e aplicação em PCA'],
-       resources:[
-         {t:'3Blue1Brown — Eigenvectors','type':'tv',url:'https://www.youtube.com/watch?v=PFDu9oVAE-g',d:'Autovalores e autovetores explicados visualmente'},
-         {t:'MIT OCW — Gilbert Strang','type':'ts',url:'https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/',d:'Curso completo e gratuito do MIT'},
-         {t:'Wolfram Alpha — Linear Algebra','type':'ts',url:'https://www.wolframalpha.com/examples/mathematics/linear-algebra/',d:'Compute autovalores e operações matriciais'}
-       ],
-       questions:[
-         {q:'O vetor v=[1,2] é autovetor de A=[3,0;0,3]? Se sim, qual o autovalor?',a:'Av = [3,6] = 3×[1,2] = 3v. Sim, autovalor λ=3.',lvl:'e'},
-         {q:'Ache os autovalores de A=[2,1;1,2].',a:'det(A−λI)=0: (2−λ)²−1=0 → λ²−4λ+3=0 → λ=1 ou λ=3.',lvl:'m'},
-         {q:'Por que a matriz de rotação por 90° não tem autovalores reais?',a:'det(R−λI): equação característica dá λ²+1=0, que tem só raízes complexas (λ=±i). Intuitivamente: rotação pura nunca mantém uma direção real.',lvl:'h'}
-       ]
-      }
-    ]
-  },
-  {
-    s:'s8',label:'🧠 Matemática Avançada — Fronteira',
-    nodes:[
-      {id:'n21',icon:'🔬',title:'Análise Real',sub:'O rigor por trás do Cálculo',
-       tags:[{k:1,t:'ε-δ definição'},{k:0,t:'Completude de ℝ'},{k:1,t:'Sequências e séries'},{k:0,t:'Integração de Riemann'},{k:0,t:'TVI e Weierstrass'}],
-       desc:'Análise Real é o Cálculo provado formalmente. Aqui você descobre que "intuitivo" não é suficiente — e que a intuição pode enganar feio sem rigor. Matemática pura começa aqui.',
-       topics:['Sequências convergentes: definição ε-N', 'Limite com ε-δ: o que realmente significa', 'Completude dos reais: o que ℝ tem que ℚ não tem', 'Integração de Riemann: soma de retângulos infinitesimais', 'Teorema do Valor Intermediário e Weierstrass'],
-       resources:[
-         {t:'MIT OCW — Real Analysis','type':'ts',url:'https://ocw.mit.edu/courses/18-100a-real-analysis-fall-2020/',d:'Curso completo de análise real — MIT OpenCourseWare'},
-         {t:'Abbott — Understanding Analysis','type':'tp',url:'https://link.springer.com/book/10.1007/978-1-4939-2712-8',d:'O livro mais acessível de análise real — Springer (acesso livre)'},
-         {t:'Real Analysis Playlist — Mathematic (YT)','type':'tv',url:'https://www.youtube.com/watch?v=sqEyWLGvvdw',d:'Série completa de análise real em inglês'}
-       ],
-       questions:[
-         {q:'A sequência aₙ = 1/n converge? Para onde?',a:'Sim. Para qualquer ε>0, existe N tal que n>N implica |1/n|<ε (tome N>1/ε). Converge para 0.',lvl:'e'},
-         {q:'A série Σ(1/n²) converge ou diverge?',a:'Converge. Pelo critério de comparação com integral ∫₁^∞ 1/x² dx = 1. Soma = π²/6 (resultado de Euler).',lvl:'m'},
-         {q:'Prove que √2 é irracional.',a:'Por contradição: √2 = p/q com mdc(p,q)=1. Então 2=p²/q² → p²=2q² → p par → p=2k → 4k²=2q² → q²=2k² → q par. Contradição com mdc(p,q)=1. ∎',lvl:'h'}
-       ]
-      },
-      {id:'n22',icon:'🔣',title:'Álgebra Abstrata',sub:'Grupos, anéis e corpos',
-       tags:[{k:1,t:'Grupos'},{k:0,t:'Homomorfismos'},{k:0,t:'Anéis'},{k:1,t:'Corpos (Fields)'},{k:0,t:'Teoria de Galois'}],
-       desc:'Grupos são estruturas com uma operação e 4 axiomas. Abstratos? Sim. Mas descrevem simetrias em física de partículas, RSA em criptografia e a impossibilidade de resolver o quinteto geral.',
-       topics:['Grupo: fechamento, associativo, neutro, inverso', 'Subgrupos e cosets (Teorema de Lagrange)', 'Homomorfismos e isomorfismos', 'Anéis: adição + multiplicação', 'Corpos (fields): ℚ, ℝ, ℂ, ℤₚ'],
-       resources:[
-         {t:'3Blue1Brown — Group Theory','type':'tv',url:'https://www.youtube.com/watch?v=mH0oCDa74tE',d:'Teoria de grupos visualizada — simétrico e belíssimo'},
-         {t:'MIT OCW — Álgebra Abstrata','type':'ts',url:'https://ocw.mit.edu/courses/18-703-modern-algebra-spring-2013/',d:'Curso completo de álgebra moderna — MIT'},
-         {t:'Artin — Algebra (Springer)','type':'tp',url:'https://link.springer.com/book/10.1007/978-3-642-17994-6',d:'Referência clássica de álgebra abstrata'}
-       ],
-       questions:[
-         {q:'O conjunto {1, −1} com a multiplicação forma um grupo?',a:'Fechado: 1×1=1, 1×(−1)=−1, (−1)×(−1)=1. Associativo: sim. Neutro: 1. Inverso: 1⁻¹=1, (−1)⁻¹=−1. Sim, é um grupo!',lvl:'e'},
-         {q:'Qual a ordem do grupo Z₆ = {0,1,2,3,4,5} com adição mod 6?',a:'Ordem = 6 (número de elementos). O gerador 1 gera o grupo inteiro.',lvl:'m'},
-         {q:'Por que é impossível resolver a equação geral de grau 5 por radicais?',a:'Galois provou que o grupo de simetrias (grupo de Galois) de um polinômio de grau 5 genérico é S₅, que não é solúvel. Grupos solúveis ↔ solucionável por radicais. S₅ não é solúvel → impossível.',lvl:'h'}
-       ]
-      },
-      {id:'n23',icon:'🌐',title:'Cálculo Multivariável e Topologia',sub:'Dimensões além do plano',
-       tags:[{k:1,t:'Derivadas parciais ∂'},{k:1,t:'Gradiente ∇f'},{k:0,t:'Integrais duplas'},{k:0,t:'Stokes e Gauss'},{k:0,t:'Espaços topológicos'}],
-       desc:'O mundo real tem mais de uma variável. Gradiente, divergente, rotacional são as ferramentas do cálculo multivariável. Topologia estuda o que não muda quando você dobra — sem rasgar.',
-       topics:['Funções f: ℝⁿ → ℝᵐ', 'Derivadas parciais e plano tangente', 'Gradiente ∇f: direção de maior crescimento', 'Integrais duplas e triplas com mudança de variável', 'Teoremas de Green, Stokes e Gauss'],
-       resources:[
-         {t:'MIT OCW — Multivariable Calculus','type':'ts',url:'https://ocw.mit.edu/courses/18-02sc-multivariable-calculus-fall-2010/',d:'Curso lendário do MIT com vídeos e notas completas'},
-         {t:'3Blue1Brown — Divergence & Curl','type':'tv',url:'https://www.youtube.com/watch?v=rB83DpBJQsE',d:'Visualização de divergente e rotacional'},
-         {t:'Khan Academy — Multivariable','type':'ts',url:'https://www.khanacademy.org/math/multivariable-calculus',d:'Módulo de cálculo multivariável com exercícios'}
-       ],
-       questions:[
-         {q:'Se f(x,y) = x² + 3y, calcule ∂f/∂x e ∂f/∂y.',a:'∂f/∂x = 2x (y constante). ∂f/∂y = 3 (x constante).',lvl:'e'},
-         {q:'Calcule o gradiente de f(x,y) = x²y + y³ no ponto (1,2).',a:'∇f = (2xy, x²+3y²). Em (1,2): (4, 1+12) = (4, 13).',lvl:'m'},
-         {q:'Qual a direção de máximo crescimento de f(x,y)=x²+y² no ponto (1,1)? Qual a taxa?',a:'∇f=(2x,2y). Em (1,1): ∇f=(2,2). Direção: (2,2)/||(2,2)|| = (1/√2, 1/√2). Taxa: ||(2,2)|| = 2√2.',lvl:'h'}
-       ]
-      }
-    ]
-  }
-];
-
-// Build done state from storage
-const storage = window.storage;
-let done = new Set();
-
-async function loadDone() {
-  try {
-    const r = await storage.get('math_roadmap_done');
-    if (r && r.value) done = new Set(JSON.parse(r.value));
-  } catch(e) { done = new Set(); }
-  updateProgress();
-  // update node visuals
-  done.forEach(id => {
-    const el = document.querySelector(`[data-id="${id}"]`);
-    if (el) el.classList.add('done');
-  });
-}
-
-async function saveDone() {
-  try { await storage.set('math_roadmap_done', JSON.stringify([...done])); } catch(e){}
-}
-
-const allNodes = DATA.flatMap(s => s.nodes);
-const totalNodes = allNodes.length;
-const nodeMap = new Map(allNodes.map(n => [n.id, n]));
-
-function updateProgress() {
-  const n = done.size;
-  document.getElementById('pb').style.width = (n/totalNodes*100) + '%';
-  document.getElementById('pl').textContent = `${n} de ${totalNodes} tópicos concluídos`;
-}
-
-// Build roadmap
-function buildRoadmap() {
-  const map = document.getElementById('map');
-  const legend = document.getElementById('legend');
-  const colors = ['c0','c1','c2','c3','c4','c5','c6','c7','c8'];
-  const lbls = ['Fundamentos','Álgebra','Geometria','Funções','Combinatória','Pré-Cálculo','Cálculo','Álgebra Linear','Avançado'];
-
-  DATA.forEach((stage, si) => {
-    // Stage wrapper
-    const sw = document.createElement('div');
-    sw.className = `stage ${stage.s}`;
-    const slbl = document.createElement('div');
-    slbl.className = 'slabel';
-    slbl.textContent = `N${si}`;
-    const sc = document.createElement('div');
-    sc.className = 'scontent';
-    const sh = document.createElement('div');
-    sh.className = 'sh';
-    sh.textContent = stage.label;
-    sc.appendChild(sh);
-
-    // Determine row cols
-    const cols = Math.min(stage.nodes.length, 4);
-    const row = document.createElement('div');
-    row.className = `row r${cols}`;
-
-    stage.nodes.forEach(nd => {
-      const node = document.createElement('button');
-      node.className = 'node' + (done.has(nd.id) ? ' done' : '');
-      node.dataset.id = nd.id;
-      node.type = 'button';
-
-      const tags = nd.tags.map(t => `<span class="tag${t.k?' k':''}">${t.t}</span>`).join('');
-      node.innerHTML = `<div class="nh"><span class="ni">${nd.icon}</span><span class="nt">${nd.title}</span></div><div class="ntags">${tags}</div>`;
-      row.appendChild(node);
-    });
-
-    sc.appendChild(row);
-    sw.appendChild(slbl);
-    sw.appendChild(sc);
-    map.appendChild(sw);
-
-    if (si < DATA.length - 1) {
-      const c = document.createElement('div');
-      c.className = 'connector';
-      c.innerHTML = `<span>▼ CONSTRÓI SOBRE ISSO ▼</span>`;
-      map.appendChild(c);
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Roadmap completo de matemática com progresso salvo no navegador para estudar do básico ao avançado em qualquer dispositivo." />
+  <meta name="theme-color" content="#0f0f13" />
+  <title>Math Roadmap</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0f0f13;
+      color: #e2e8f0;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
     }
 
-    // Legend
-    const li = document.createElement('div');
-    li.className = 'li';
-    li.innerHTML = `<div class="ld" style="background:var(--${colors[si]})"></div>${lbls[si]}`;
-    legend.appendChild(li);
-  });
+    header { text-align: center; padding: 40px 20px 20px; }
+    header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #a78bfa, #60a5fa, #34d399);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+    }
+    header p { color: #94a3b8; margin-top: 8px; font-size: .95rem; }
 
-  // Event delegation
-  document.getElementById('map').addEventListener('click', e => {
-    const btn = e.target.closest('[data-id]');
-    if (btn) openModal(btn.dataset.id);
-  });
-}
+    .progress-bar-wrap {
+      max-width: 500px;
+      margin: 16px auto;
+      background: #1e1e2e;
+      border-radius: 99px;
+      height: 8px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 8px;
+      border-radius: 99px;
+      background: linear-gradient(90deg, #a78bfa, #60a5fa);
+      width: 0%;
+      transition: width .4s;
+    }
+    .progress-label {
+      text-align: center;
+      color: #64748b;
+      font-size: .8rem;
+      margin-top: 6px;
+    }
 
-// Modal
-let currentId = null;
-let ratings = {};
+    .top-actions {
+      margin: 18px auto 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
 
-function openModal(id) {
-  currentId = id;
-  ratings = {};
-  const nd = nodeMap.get(id);
-  if (!nd) return;
+    .btn {
+      border: 1px solid #2d2d44;
+      background: #171726;
+      color: #cbd5e1;
+      padding: 8px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: .82rem;
+      transition: .2s;
+    }
 
-  document.getElementById('micon').textContent = nd.icon;
-  document.getElementById('mtitle').textContent = nd.title;
-  document.getElementById('msub').textContent = nd.sub;
-  document.getElementById('mdesc').textContent = nd.desc;
+    .btn:hover,
+    .btn:focus-visible {
+      border-color: #60a5fa;
+      color: #f1f5f9;
+      outline: none;
+    }
 
-  // Topics
-  document.getElementById('mlist').innerHTML = nd.topics.map(t => `<li>${t}</li>`).join('');
+    .feedback {
+      color: #34d399;
+      min-height: 1.2em;
+      font-size: .76rem;
+      text-align: center;
+      margin-top: 6px;
+    }
 
-  // Mark button
-  updateMarkBtn();
+    .search-wrap {
+      margin: 12px auto 0;
+      max-width: 560px;
+      padding: 0 10px;
+    }
 
-  // Resources
-  document.getElementById('rlist').innerHTML = nd.resources.map(r => `
-    <a class="rcard" href="${r.url}" target="_blank" rel="noopener">
-      <div class="rtop">
-        <span class="rtype ${r.type}">${r.type === 'tv' ? '▶ YouTube' : r.type === 'ts' ? '🌐 Site' : r.type === 'tp' ? '📄 PDF/Doc' : '📺 Canal'}</span>
-        <span class="rname">${r.t}</span>
-        <span class="rarr">↗</span>
-      </div>
-      <div class="rdesc">${r.d}</div>
-    </a>
-  `).join('');
+    .search-input {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid #2d2d44;
+      background: #171726;
+      color: #e2e8f0;
+      padding: 10px 12px;
+      font-size: .86rem;
+    }
 
-  // Questions
-  const lvlMap = {e:'qe',m:'qm',h:'qh'};
-  const lvlLabel = {e:'Fácil',m:'Médio',h:'Difícil'};
-  document.getElementById('qlist').innerHTML = nd.questions.map((q, qi) => `
-    <div class="qcard" id="qcard-${qi}">
-      <div class="qhead">
-        <div class="qnum">${qi+1}</div>
-        <span class="qlvl ${lvlMap[q.lvl]}">${lvlLabel[q.lvl]}</span>
-      </div>
-      <div class="qtxt">${q.q}</div>
-      <button class="qtog" onclick="toggleAns(${qi})">👁 Ver resposta</button>
-      <div class="qans" id="qans-${qi}">✅ ${q.a}</div>
-      <div class="qself">
-        <button class="qrate" onclick="rate(${qi},'bad')">😅 Não sabia</button>
-        <button class="qrate" onclick="rate(${qi},'ok')">🤔 Com esforço</button>
-        <button class="qrate" onclick="rate(${qi},'good')">💪 Facilmente</button>
-      </div>
+    .search-input:focus-visible {
+      outline: none;
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 3px #60a5fa22;
+    }
+
+    .roadmap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px 16px 80px;
+      position: relative;
+    }
+
+    .roadmap::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, #a78bfa22, #60a5fa44, #34d39922);
+      transform: translateX(-50%);
+    }
+
+    .level { margin-bottom: 10px; }
+    .level-header { text-align: center; margin: 32px 0 12px; position: relative; z-index: 2; }
+    .level-badge {
+      display: inline-block;
+      padding: 4px 18px;
+      border-radius: 99px;
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .nodes-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 2;
+      margin-bottom: 6px;
+    }
+
+    .node {
+      background: #1a1a27;
+      border: 1.5px solid #2d2d44;
+      border-radius: 12px;
+      padding: 14px 16px;
+      width: 190px;
+      cursor: pointer;
+      transition: transform .2s, box-shadow .2s, border-color .2s;
+      position: relative;
+      user-select: none;
+      text-align: left;
+    }
+    .node:hover,
+    .node:focus-visible {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, .5);
+      outline: none;
+    }
+    .node.done { opacity: .7; }
+    .node.done::after {
+      content: '✓';
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      font-size: .8rem;
+      color: #34d399;
+      font-weight: 700;
+    }
+
+    .node-icon { font-size: 1.4rem; margin-bottom: 6px; }
+    .node-title { font-size: .88rem; font-weight: 700; color: #f1f5f9; margin-bottom: 3px; }
+    .node-sub { font-size: .72rem; color: #64748b; line-height: 1.4; }
+
+    .lv0 .node { border-color: #7c3aed44; } .lv0 .node:hover, .lv0 .node:focus-visible { border-color: #7c3aed; box-shadow: 0 0 20px #7c3aed33; }
+    .lv1 .node { border-color: #2563eb44; } .lv1 .node:hover, .lv1 .node:focus-visible { border-color: #2563eb; box-shadow: 0 0 20px #2563eb33; }
+    .lv2 .node { border-color: #0891b244; } .lv2 .node:hover, .lv2 .node:focus-visible { border-color: #0891b2; box-shadow: 0 0 20px #0891b233; }
+    .lv3 .node { border-color: #05966944; } .lv3 .node:hover, .lv3 .node:focus-visible { border-color: #059669; box-shadow: 0 0 20px #05966933; }
+    .lv4 .node { border-color: #d9770644; } .lv4 .node:hover, .lv4 .node:focus-visible { border-color: #d97706; box-shadow: 0 0 20px #d9770633; }
+    .lv5 .node { border-color: #dc262644; } .lv5 .node:hover, .lv5 .node:focus-visible { border-color: #dc2626; box-shadow: 0 0 20px #dc262633; }
+    .lv6 .node { border-color: #db277744; } .lv6 .node:hover, .lv6 .node:focus-visible { border-color: #db2777; box-shadow: 0 0 20px #db277733; }
+    .lv7 .node { border-color: #65a30d44; } .lv7 .node:hover, .lv7 .node:focus-visible { border-color: #65a30d; box-shadow: 0 0 20px #65a30d33; }
+    .lv8 .node { border-color: #9333ea44; } .lv8 .node:hover, .lv8 .node:focus-visible { border-color: #9333ea; box-shadow: 0 0 20px #9333ea33; }
+
+    .badge-lv0 { background: #7c3aed22; color: #a78bfa; border: 1px solid #7c3aed44; }
+    .badge-lv1 { background: #2563eb22; color: #60a5fa; border: 1px solid #2563eb44; }
+    .badge-lv2 { background: #0891b222; color: #38bdf8; border: 1px solid #0891b244; }
+    .badge-lv3 { background: #05966922; color: #34d399; border: 1px solid #05966944; }
+    .badge-lv4 { background: #d9770622; color: #fbbf24; border: 1px solid #d9770644; }
+    .badge-lv5 { background: #dc262622; color: #f87171; border: 1px solid #dc262644; }
+    .badge-lv6 { background: #db277722; color: #f472b6; border: 1px solid #db277744; }
+    .badge-lv7 { background: #65a30d22; color: #a3e635; border: 1px solid #65a30d44; }
+    .badge-lv8 { background: #9333ea22; color: #c084fc; border: 1px solid #9333ea44; }
+
+    .connector {
+      text-align: center;
+      color: #334155;
+      font-size: 1.2rem;
+      margin: 4px 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #000a;
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #16162a;
+      border: 1px solid #2d2d44;
+      border-radius: 16px;
+      max-width: 480px;
+      width: 100%;
+      padding: 28px;
+      position: relative;
+      animation: pop .2s ease;
+    }
+    @keyframes pop { from { transform: scale(.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .modal h2 { font-size: 1.2rem; font-weight: 800; margin-bottom: 4px; }
+    .modal .modal-tags { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0; }
+    .modal .tag { font-size: .7rem; padding: 2px 10px; border-radius: 99px; background: #1e1e3a; color: #94a3b8; }
+    .modal p { font-size: .85rem; color: #94a3b8; line-height: 1.6; margin-bottom: 12px; }
+    .modal ul { font-size: .82rem; color: #94a3b8; padding-left: 18px; line-height: 1.8; }
+    .modal .close-btn {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: none;
+      border: none;
+      color: #64748b;
+      font-size: 1.3rem;
+      cursor: pointer;
+    }
+    .modal .mark-btn {
+      margin-top: 18px;
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 700;
+      font-size: .9rem;
+      cursor: pointer;
+      background: #a78bfa;
+      color: #0f0f13;
+      transition: background .2s;
+    }
+    .modal .mark-btn:hover { background: #c4b5fd; }
+    .modal .mark-btn.undone { background: #1e1e3a; color: #94a3b8; }
+
+
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header { padding-top: 26px; }
+      header h1 { font-size: 1.6rem; }
+      .roadmap::before { display: none; }
+      .nodes-row { gap: 10px; }
+      .node { width: min(100%, 360px); }
+      .level-header { margin-top: 24px; }
+      .modal { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🧮 Roadmap de Matemática</h1>
+    <p>Do zero absoluto até a matemática universitária avançada. Clique em qualquer tópico para aprender mais.</p>
+    <div class="progress-bar-wrap" role="progressbar" aria-label="Progresso de tópicos concluídos" aria-valuemin="0" aria-valuemax="35" aria-valuenow="0">
+      <div class="progress-bar" id="pbar"></div>
     </div>
-  `).join('');
-  document.getElementById('lcheck').className = 'lcheck';
+    <div class="progress-label" id="plabel">0 de 35 tópicos concluídos</div>
+    <div class="top-actions">
+      <button class="btn" id="share-btn" type="button">🔗 Copiar link do site</button>
+      <button class="btn" id="next-btn" type="button">▶ Continuar estudo</button>
+      <button class="btn" id="export-btn" type="button">⬇ Exportar progresso</button>
+      <button class="btn" id="import-btn" type="button">⬆ Importar progresso</button>
+      <button class="btn" id="clear-btn" type="button">♻️ Limpar progresso</button>
+      <input id="import-file" type="file" accept="application/json" hidden />
+    </div>
+    <div class="feedback" id="feedback" aria-live="polite"></div>
+    <div class="search-wrap">
+      <input class="search-input" id="search-input" type="search" placeholder="Buscar tópico (ex: derivadas, frações, matrizes...)" aria-label="Buscar tópicos no roadmap" />
+    </div>
+  </header>
 
-  // Reset to first tab
-  switchTab('overview');
-  document.getElementById('ov').classList.add('open');
-}
+  <main class="roadmap" id="roadmap" aria-label="Roadmap de Matemática"></main>
 
-function toggleAns(qi) {
-  const el = document.getElementById(`qans-${qi}`);
-  el.classList.toggle('show');
-  el.previousElementSibling.textContent = el.classList.contains('show') ? '🙈 Ocultar' : '👁 Ver resposta';
-}
+  <div class="modal-overlay" id="modal" aria-hidden="true">
+    <div class="modal" id="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button class="close-btn" type="button" id="close-btn" aria-label="Fechar modal">✕</button>
+      <div id="modal-icon" style="font-size:2rem;margin-bottom:8px" aria-hidden="true"></div>
+      <h2 id="modal-title"></h2>
+      <div class="modal-tags" id="modal-tags"></div>
+      <p id="modal-desc"></p>
+      <ul id="modal-topics"></ul>
+      <button class="mark-btn" id="mark-btn" type="button"></button>
+    </div>
+  </div>
 
-function rate(qi, val) {
-  ratings[qi] = val;
-  const card = document.getElementById(`qcard-${qi}`);
-  card.querySelectorAll('.qrate').forEach(b => b.className = 'qrate');
-  const btns = card.querySelectorAll('.qrate');
-  const cls = {bad:'sb', ok:'so', good:'sg'}[val];
-  btns[{bad:0,ok:1,good:2}[val]].classList.add(cls);
+  <script>
+    const levels = [
+      {
+        id: 'lv0', label: '— Nível 0 · Ponto de Partida —', badge: 'badge-lv0',
+        nodes: [
+          { id: 'n0', icon: '🔢', title: 'Números e Contagem', sub: 'Naturais, inteiros, zero', desc: 'Tudo começa aqui. Números são a linguagem do universo. Você aprende a nomear quantidades, entender o zero (que levou milênios pra ser aceito!) e contar sem limites.', topics: ['Números naturais (0, 1, 2, 3...)', 'Linha numérica', 'Comparar e ordenar números', 'O que é o zero?', 'Infinito: existe?'] },
+          { id: 'n1', icon: '➕', title: 'Operações Básicas', sub: 'Soma, subtração, multiplicação, divisão', desc: 'As 4 operações são as ferramentas fundamentais. Tudo mais em matemática é uma combinação dessas quatro.', topics: ['Adição e subtração', 'Multiplicação (tabuada)', 'Divisão exata e com resto', 'Propriedades comutativa, associativa, distributiva', 'Ordem das operações (PEMDAS)'] },
+          { id: 'n2', icon: '🧩', title: 'Frações', sub: 'Partes do todo', desc: 'Frações existem porque o mundo não é inteiro. Você precisa dividir uma pizza, medir 1/3 de xícara. O conceito de "parte por inteiro" é crucial.', topics: ['Numerador e denominador', 'Frações equivalentes', 'Simplificação', 'Soma e subtração de frações', 'Multiplicação e divisão de frações'] },
+          { id: 'n3', icon: '💯', title: 'Decimais e Porcentagem', sub: 'Frações no formato decimal', desc: 'Decimais são frações com denominador potência de 10. Porcentagem é "por cento", literalmente fração com denominador 100.', topics: ['Notação decimal', 'Conversão fração ↔ decimal', 'O que é %?', 'Calcular desconto e acréscimo', 'Juros simples básico'] },
+        ]
+      },
+      {
+        id: 'lv1', label: '— Nível 1 · Aritmética —', badge: 'badge-lv1',
+        nodes: [
+          { id: 'n4', icon: '⚡', title: 'Potenciação e Radiciação', sub: 'Multiplicação repetida', desc: 'Potência é um atalho para multiplicação repetida. 2⁸ = 256. Raiz é a operação inversa. São a base de crescimento exponencial, algo presente em finanças, biologia e física.', topics: ['Potências inteiras', 'Propriedades das potências', 'Raiz quadrada e cúbica', 'Números irracionais (√2)', 'Notação científica'] },
+          { id: 'n5', icon: '🔗', title: 'Divisibilidade', sub: 'MMC, MDC, primos', desc: 'Todo número é feito de "átomos" chamados números primos. O crivo de Eratóstenes é um dos algoritmos mais antigos da história (276 a.C.)!', topics: ['Critérios de divisibilidade', 'Números primos', 'Fatoração em primos', 'MMC e MDC', 'Teorema fundamental da Aritmética'] },
+          { id: 'n6', icon: '⚖️', title: 'Razão e Proporção', sub: 'Relações entre grandezas', desc: 'Razão é uma comparação. Proporção é quando duas razões são iguais. Escala, velocidade, receitas culinárias — tudo usa proporção.', topics: ['Razão a:b', 'Proporções', 'Regra de 3 simples', 'Regra de 3 composta', 'Grandezas diretamente/inversamente proporcionais'] },
+        ]
+      },
+      {
+        id: 'lv2', label: '— Nível 2 · Álgebra Básica —', badge: 'badge-lv2',
+        nodes: [
+          { id: 'n7', icon: '🔤', title: 'Variáveis e Expressões', sub: 'Letras em vez de números', desc: 'Uma variável é um número que você ainda não sabe. A álgebra é a arte de trabalhar com o desconhecido. Einstein usou isso pra chegar em E=mc².', topics: ['O que é uma variável?', 'Expressões algébricas', 'Polinômios', 'Fatoração básica', 'Produtos notáveis'] },
+          { id: 'n8', icon: '⚡', title: 'Equações do 1º Grau', sub: 'Achar o valor de x', desc: 'Uma equação é uma balança: o que você faz de um lado, faz do outro. Resolver equações é o coração da matemática aplicada.', topics: ['Princípio da equivalência', 'Equações lineares simples', 'Equações com frações', 'Verificação da solução', 'Problemas contextualizados'] },
+          { id: 'n9', icon: '📐', title: 'Sistemas de Equações', sub: 'Mais de uma equação ao mesmo tempo', desc: 'Quando você tem dois desconhecidos, precisa de duas equações. Sistemas aparecem em todo cálculo de equilíbrio, mistura e intersecção.', topics: ['Método da substituição', 'Método da adição (eliminação)', 'Método gráfico', 'Sistema sem solução / infinitas soluções', 'Aplicações práticas'] },
+          { id: 'n10', icon: '📏', title: 'Inequações', sub: 'Maior, menor, desigualdades', desc: 'Nem tudo é igual. Inequações definem intervalos onde soluções existem. Fundamentais em otimização e programação linear.', topics: ['Símbolos <, >, ≤, ≥', 'Inequações do 1º grau', 'Representação na reta numérica', 'Intervalos', 'Inequações compostas'] },
+        ]
+      },
+      {
+        id: 'lv3', label: '— Nível 3 · Geometria —', badge: 'badge-lv3',
+        nodes: [
+          { id: 'n11', icon: '📐', title: 'Geometria Plana', sub: 'Figuras em 2D', desc: 'Pitágoras descobriu que em todo triângulo retângulo, a² + b² = c². Esse único teorema é a base da engenharia, arquitetura e GPS.', topics: ['Pontos, retas e planos', 'Ângulos', 'Triângulos (Pitágoras!)', 'Quadriláteros e polígonos', 'Circunferência e círculo', 'Área e perímetro'] },
+          { id: 'n12', icon: '📦', title: 'Geometria Espacial', sub: 'Figuras em 3D', desc: 'O mundo real é 3D. Volume de uma caixa, área de uma lata, capacidade de um reservatório — tudo é geometria espacial.', topics: ['Prismas e pirâmides', 'Cilindros, cones, esferas', 'Volume e área total', 'Planificação de sólidos', 'Seções transversais'] },
+          { id: 'n13', icon: '📡', title: 'Trigonometria', sub: 'Seno, cosseno, tangente', desc: 'Trigonometria nasceu para medir o que não dava pra alcançar — a altura de uma montanha, a distância até a Lua. soh-cah-toa é só o começo.', topics: ['Triângulo retângulo', 'Seno, cosseno, tangente', 'Lei dos senos e cossenos', 'Ângulos notáveis (30°, 45°, 60°)', 'Aplicações de altura e distância'] },
+        ]
+      },
+      {
+        id: 'lv4', label: '— Nível 4 · Álgebra Intermediária —', badge: 'badge-lv4',
+        nodes: [
+          { id: 'n14', icon: '🌊', title: 'Equações do 2º Grau', sub: 'Baskara e fórmula quadrática', desc: 'ax² + bx + c = 0. A fórmula de Bhaskara (nome correto!) veio do matemático indiano Brahmagupta. O discriminante Δ decide tudo.', topics: ['Forma geral ax²+bx+c', 'Fórmula de Bhaskara', 'Discriminante Δ', 'Produto e soma das raízes (Viète)', 'Equações biquadráticas'] },
+          { id: 'n15', icon: '📈', title: 'Funções', sub: 'Relações de entrada e saída', desc: 'Uma função é uma máquina: entra x, sai f(x). Funções descrevem todo fenômeno do mundo: temperatura, crescimento, lucro.', topics: ['Definição de função', 'Domínio, contradomínio e imagem', 'Função afim (linear)', 'Função quadrática (parábola)', 'Gráficos e transformações'] },
+          { id: 'n16', icon: '📉', title: 'Funções Exponenciais e Log', sub: 'Crescimento e escala', desc: 'Exponencial descreve vírus, dívidas e explosões nucleares. Logaritmo é o inverso — e é a escala da música (dó-ré-mi é exponencial!).', topics: ['f(x) = aˣ', 'Propriedades da exponencial', 'Definição de logaritmo', 'Propriedades do log', 'log natural (ln) e número e'] },
+          { id: 'n17', icon: '🔢', title: 'PA e PG', sub: 'Sequências e progressões', desc: 'Progressões aritmética (soma constante) e geométrica (razão constante). Juros compostos é uma PG. A soma dos termos gera fórmulas elegantíssimas.', topics: ['Sequências numéricas', 'PA: definição e fórmulas', 'PG: definição e fórmulas', 'Soma dos termos', 'Aplicação em juros compostos'] },
+        ]
+      },
+      {
+        id: 'lv5', label: '— Nível 5 · Pré-Cálculo —', badge: 'badge-lv5',
+        nodes: [
+          { id: 'n18', icon: '🌀', title: 'Trigonometria Avançada', sub: 'Ciclo trigonométrico', desc: 'Seno e cosseno são funções periódicas — descrevem ondas de som, luz, eletricidade. O círculo unitário unifica tudo.', topics: ['Ciclo trigonométrico', 'Funções sen, cos, tg e inversas', 'Identidades trigonométricas', 'Fórmulas de adição', 'Equações trigonométricas'] },
+          { id: 'n19', icon: '🔮', title: 'Números Complexos', sub: 'A raiz de -1 existe!', desc: 'i = √(-1). Parece mentira, mas números complexos são a base da engenharia elétrica, mecânica quântica e processamento de sinais. O plano de Argand é lindo.', topics: ['Definição de i', 'Forma algébrica a+bi', 'Operações com complexos', 'Módulo e argumento', 'Fórmula de Euler: eⁱˣ = cos x + i·sen x'] },
+          { id: 'n20', icon: '🎲', title: 'Combinatória', sub: 'Contar sem listar', desc: 'Quantas senhas de 4 dígitos existem? Quantas mãos no poker? Combinatória responde isso de forma exata e elegante.', topics: ['Princípio Fundamental da Contagem', 'Fatorial', 'Permutações', 'Combinações', 'Binômio de Newton'] },
+          { id: 'n21', icon: '📊', title: 'Probabilidade e Estatística Básica', sub: 'Incerteza com precisão', desc: 'Probabilidade quantifica o acaso. Estatística resume dados. Juntas, são a base da ciência moderna, medicina, IA.', topics: ['Espaço amostral e eventos', 'P(A) e regras básicas', 'Média, mediana, moda', 'Desvio padrão e variância', 'Distribuições: normal, binomial'] },
+        ]
+      },
+      {
+        id: 'lv6', label: '— Nível 6 · Cálculo —', badge: 'badge-lv6',
+        nodes: [
+          { id: 'n22', icon: '🔭', title: 'Limites', sub: 'O que acontece quando x → a', desc: 'Limite é perguntar: "pra onde vai a função enquanto x se aproxima de algo?" Newton e Leibniz inventaram o cálculo para descrever movimento. Aqui começa a revolução.', topics: ['Conceito intuitivo de limite', 'Limites laterais', 'Limites no infinito', 'Formas indeterminadas', 'Continuidade de funções'] },
+          { id: 'n23', icon: '📐', title: 'Derivadas', sub: 'Taxa de variação instantânea', desc: 'Derivada é a inclinação da curva num ponto. Velocidade é derivada da posição. Aceleração é derivada da velocidade. Física inteira usa isso.', topics: ['Definição via limite', 'Regras (produto, quociente, cadeia)', 'Derivadas elementares', 'Máximos e mínimos', 'Aplicações: otimização'] },
+          { id: 'n24', icon: '🌊', title: 'Integrais', sub: 'Área sob a curva', desc: 'Integral é a operação inversa da derivada (Teorema Fundamental do Cálculo). Com ela você calcula área, volume, trabalho, probabilidade.', topics: ['Integral como área', 'Integral indefinida e definida', 'Regras de integração', 'Integração por substituição', 'Integral por partes'] },
+          { id: 'n25', icon: '🌀', title: 'Equações Diferenciais', sub: 'Equações com derivadas', desc: 'A física do universo é escrita em EDOs. F=ma é uma equação diferencial. Crescimento populacional, circuitos elétricos, calor — tudo.', topics: ['O que é uma EDO?', 'EDOs de 1ª ordem separáveis', 'EDOs lineares com coeficiente constante', 'Modelo de crescimento (Malthus)', 'Circuitos RC e osciladores'] },
+        ]
+      },
+      {
+        id: 'lv7', label: '— Nível 7 · Álgebra Linear —', badge: 'badge-lv7',
+        nodes: [
+          { id: 'n26', icon: '➡️', title: 'Vetores', sub: 'Grandezas com direção', desc: 'Vetores têm magnitude e direção. São a linguagem da física, computação gráfica e machine learning. Todo embedding de IA é um vetor.', topics: ['Definição e notação', 'Operações: soma e escalar', 'Produto escalar (dot product)', 'Produto vetorial (cross product)', 'Projeção e ortogonalidade'] },
+          { id: 'n27', icon: '🟩', title: 'Matrizes', sub: 'Grades de números', desc: 'Matrizes organizam sistemas de equações. São o coração de transformações lineares, redes neurais e gráficos 3D (rotação, escala, translação são matrizes!).', topics: ['Definição e operações', 'Multiplicação de matrizes', 'Matriz transposta e inversa', 'Determinante', 'Sistemas lineares via matrizes (Gauss)'] },
+          { id: 'n28', icon: '🔁', title: 'Espaços Vetoriais', sub: 'Estrutura abstrata', desc: 'Um espaço vetorial é qualquer conjunto com soma e escalar que obedecem certas regras. Funções, polinômios e matrizes são espaços vetoriais!', topics: ['Axiomas do espaço vetorial', 'Subespaços', 'Base e dimensão', 'Independência linear', 'Transformações lineares'] },
+          { id: 'n29', icon: '🎯', title: 'Autovalores e Autovetores', sub: 'A "geometria" das transformações', desc: 'Autovetores são as direções que uma transformação não "vira" — só escala. Google PageRank, análise de componentes principais (PCA) em IA — tudo usa isso.', topics: ['Definição de autovalor λ', 'Equação característica', 'Diagonalização', 'Decomposição espectral', 'Aplicação em PCA e Machine Learning'] },
+        ]
+      },
+      {
+        id: 'lv8', label: '— Nível 8 · Matemática Avançada —', badge: 'badge-lv8',
+        nodes: [
+          { id: 'n30', icon: '🧠', title: 'Análise Real', sub: 'O rigor por trás do Cálculo', desc: 'Análise Real é o Cálculo com prova formal. Aqui você entende o que "limite" significa de verdade, com épsilons e deltas. Matemática pura começa aqui.', topics: ['Sequências e séries convergentes', 'Definição ε-δ de limite', 'Teorema do Valor Intermediário', 'Completude dos reais', 'Integração de Riemann'] },
+          { id: 'n31', icon: '🔣', title: 'Álgebra Abstrata', sub: 'Grupos, anéis e corpos', desc: 'Grupos são estruturas com uma operação e 4 axiomas. Parecem abstratos, mas descrevem simetrias da física de partículas, criptografia RSA e muito mais.', topics: ['Grupos e subgrupos', 'Homomorfismos', 'Anéis e ideais', 'Corpos (fields)', 'Teoria de Galois (noção)'] },
+          { id: 'n32', icon: '🌐', title: 'Topologia', sub: 'Geometria sem distância', desc: 'Topologia estuda o que não muda quando você estica ou dobra um espaço (sem rasgar). Uma xícara e uma rosquinha são topologicamente idênticas — e isso não é piada!', topics: ['Espaços métricos', 'Espaços topológicos', 'Continuidade topológica', 'Compacidade e conexidade', 'Noção de homeomorfismo'] },
+          { id: 'n33', icon: '📡', title: 'Cálculo em Várias Variáveis', sub: 'Funções de ℝⁿ → ℝᵐ', desc: 'O mundo tem mais de uma variável. Gradiente, divergente, rotacional — ferramentas do cálculo multivariável são a base da física, eletromagnetismo e deep learning.', topics: ['Funções de 2+ variáveis', 'Derivadas parciais', 'Gradiente e plano tangente', 'Integrais duplas e triplas', 'Teoremas de Green, Stokes, Gauss'] },
+          { id: 'n34', icon: '🎲', title: 'Probabilidade Avançada', sub: 'Teoria da medida e processos', desc: 'Probabilidade formal usa teoria da medida. Processos estocásticos descrevem o mercado financeiro, difusão de moléculas e passeios aleatórios.', topics: ['Sigma-álgebras e medida', 'Variáveis aleatórias contínuas', 'Distribuições avançadas', 'Processos de Markov', 'Movimento Browniano'] },
+        ]
+      },
+    ];
 
-  const nd = nodeMap.get(currentId);
-  if (Object.keys(ratings).length === nd.questions.length) showLevelCheck();
-}
+    const allNodes = levels.flatMap(level => level.nodes);
+    const nodeById = new Map(allNodes.map(node => [node.id, node]));
 
-function showLevelCheck() {
-  const goods = Object.values(ratings).filter(v => v === 'good').length;
-  const bads = Object.values(ratings).filter(v => v === 'bad').length;
-  const lc = document.getElementById('lcheck');
-  const nd = nodeMap.get(currentId);
-  const total = nd.questions.length;
+    function readDoneFromStorage() {
+      try {
+        const stored = JSON.parse(localStorage.getItem('math_done') || '[]');
+        if (!Array.isArray(stored)) return new Set();
+        const validIds = stored.filter(id => typeof id === 'string' && nodeById.has(id));
+        return new Set(validIds);
+      } catch {
+        return new Set();
+      }
+    }
 
-  let emoji, msg, sub, cls;
-  if (goods === total) {
-    emoji = '🏆'; msg = 'Pode avançar de nível!';
-    sub = `Você resolveu todas as ${total} questões com facilidade.\nMarca esse tópico como concluído e siga em frente!`;
-    cls = 'lcmsg';
-  } else if (bads >= total - 1) {
-    emoji = '📚'; msg = 'Revise este tópico antes de avançar.';
-    sub = `Ainda há lacunas. Explore os recursos indicados\ne volte aqui em alguns dias.`;
-    cls = 'lcmsg';
-  } else {
-    emoji = '⚡'; msg = 'Quase lá — mais um pouco de prática!';
-    sub = `Você está no caminho certo. Refaça as questões\nque tiveram dificuldade e avance quando estiver confortável.`;
-    cls = 'lcmsg';
-  }
+    const done = readDoneFromStorage();
+    const modal = document.getElementById('modal');
+    const modalBox = document.getElementById('modal-box');
+    const progressWrap = document.querySelector('.progress-bar-wrap');
+    const feedback = document.getElementById('feedback');
+    const searchInput = document.getElementById('search-input');
+    const pageRoots = [document.querySelector('header'), document.querySelector('main')];
+    let lastFocusedEl = null;
 
-  document.getElementById('lcemoji').textContent = emoji;
-  document.getElementById('lcmsg').textContent = msg;
-  document.getElementById('lcsub').textContent = sub;
-  lc.classList.add('show');
-  lc.scrollIntoView({behavior:'smooth',block:'nearest'});
-}
+    function showFeedback(message, isError = false) {
+      feedback.textContent = message;
+      feedback.style.color = isError ? '#f87171' : '#34d399';
+      window.clearTimeout(showFeedback.timeoutId);
+      showFeedback.timeoutId = window.setTimeout(() => {
+        feedback.textContent = '';
+      }, 2400);
+    }
 
-function updateMarkBtn() {
-  const btn = document.getElementById('mbtn');
-  const isDone = done.has(currentId);
-  btn.textContent = isDone ? '↩ Marcar como não concluído' : '✓ Marcar como concluído';
-  btn.className = 'mbtn' + (isDone ? ' undone' : '');
-}
+    function saveDone() {
+      try {
+        localStorage.setItem('math_done', JSON.stringify([...done]));
+        return true;
+      } catch {
+        showFeedback('Falha ao salvar (armazenamento cheio ou bloqueado).', true);
+        return false;
+      }
+    }
 
-document.getElementById('mbtn').addEventListener('click', async () => {
-  const el = document.querySelector(`[data-id="${currentId}"]`);
-  if (done.has(currentId)) { done.delete(currentId); el && el.classList.remove('done'); }
-  else { done.add(currentId); el && el.classList.add('done'); }
-  updateMarkBtn();
-  updateProgress();
-  await saveDone();
-});
+    function updateProgress() {
+      const total = allNodes.length;
+      const n = done.size;
+      const pct = total === 0 ? 0 : (n / total) * 100;
 
-// Tabs
-function switchTab(tabId) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tabId));
-  document.querySelectorAll('.tpanel').forEach(p => p.classList.toggle('active', p.id === 'tab-'+tabId));
-}
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => switchTab(tab.dataset.tab));
-});
+      document.getElementById('pbar').style.width = `${pct}%`;
+      document.getElementById('plabel').textContent = `${n} de ${total} tópicos concluídos`;
+      progressWrap.setAttribute('aria-valuenow', String(n));
+      progressWrap.setAttribute('aria-valuemax', String(total));
+    }
 
-// Close modal
-function closeModal() { document.getElementById('ov').classList.remove('open'); }
-document.getElementById('closebtn').addEventListener('click', closeModal);
-document.getElementById('ov').addEventListener('click', e => { if (e.target.id === 'ov') closeModal(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+    function buildRoadmap() {
+      const container = document.getElementById('roadmap');
 
-// Init
-buildRoadmap();
-loadDone();
-</script>
+      levels.forEach((lv, li) => {
+        const lvDiv = document.createElement('section');
+        lvDiv.className = `level ${lv.id}`;
+
+        const header = document.createElement('div');
+        header.className = 'level-header';
+        header.innerHTML = `<span class="level-badge ${lv.badge}">${lv.label}</span>`;
+        lvDiv.appendChild(header);
+
+        const row = document.createElement('div');
+        row.className = 'nodes-row';
+
+        lv.nodes.forEach(nodeData => {
+          const node = document.createElement('button');
+          node.className = `node${done.has(nodeData.id) ? ' done' : ''}`;
+          node.type = 'button';
+          node.dataset.nodeId = nodeData.id;
+          node.setAttribute('aria-label', `${nodeData.title} - ${nodeData.sub}`);
+          node.dataset.search = `${nodeData.title} ${nodeData.sub} ${nodeData.desc} ${nodeData.topics.join(' ')}`.toLowerCase();
+          node.innerHTML = `<div class="node-icon">${nodeData.icon}</div><div class="node-title">${nodeData.title}</div><div class="node-sub">${nodeData.sub}</div>`;
+          row.appendChild(node);
+        });
+
+        lvDiv.appendChild(row);
+
+        if (li < levels.length - 1) {
+          const c = document.createElement('div');
+          c.className = 'connector';
+          c.textContent = '⬇';
+          lvDiv.appendChild(c);
+        }
+
+        container.appendChild(lvDiv);
+      });
+
+      updateProgress();
+    }
+
+    let currentNode = null;
+
+    function getFocusable(root) {
+      return [...root.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')]
+        .filter(el => !el.disabled && el.getAttribute('aria-hidden') !== 'true');
+    }
+
+    function setBackgroundInert(isOpen) {
+      pageRoots.forEach(root => {
+        if (!root) return;
+        if (isOpen) root.setAttribute('inert', '');
+        else root.removeAttribute('inert');
+      });
+    }
+
+    function syncHash(nodeId) {
+      if (!nodeId) {
+        history.replaceState(null, '', `${location.pathname}${location.search}`);
+        return;
+      }
+      history.replaceState(null, '', `#${nodeId}`);
+    }
+
+    function onModalKeydown(event) {
+      if (!modal.classList.contains('open')) return;
+
+      if (event.key === 'Escape') {
+        closeModal();
+        return;
+      }
+
+      if (event.key !== 'Tab') return;
+      const focusables = getFocusable(modalBox);
+      if (!focusables.length) return;
+
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    function openModal(nodeData, triggerEl = null) {
+      currentNode = nodeData;
+      document.getElementById('modal-icon').textContent = nodeData.icon;
+      document.getElementById('modal-title').textContent = nodeData.title;
+      document.getElementById('modal-desc').textContent = nodeData.desc;
+
+      const tags = document.getElementById('modal-tags');
+      tags.innerHTML = `<span class="tag">📚 ${nodeData.sub}</span>`;
+
+      const ul = document.getElementById('modal-topics');
+      ul.innerHTML = nodeData.topics.map(topic => `<li>${topic}</li>`).join('');
+
+      const btn = document.getElementById('mark-btn');
+      const isDone = done.has(nodeData.id);
+      btn.textContent = isDone ? '↩ Marcar como não concluído' : '✓ Marcar como concluído';
+      btn.className = `mark-btn${isDone ? ' undone' : ''}`;
+
+      lastFocusedEl = triggerEl || document.activeElement;
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      setBackgroundInert(true);
+      document.body.style.overflow = 'hidden';
+      document.addEventListener('keydown', onModalKeydown, true);
+      syncHash(nodeData.id);
+      btn.focus();
+    }
+
+    function updateNodeVisualState(nodeId) {
+      const button = document.querySelector(`[data-node-id="${nodeId}"]`);
+      if (!button) return;
+      button.classList.toggle('done', done.has(nodeId));
+    }
+
+    function toggleDone() {
+      if (!currentNode) return;
+
+      if (done.has(currentNode.id)) {
+        done.delete(currentNode.id);
+      } else {
+        done.add(currentNode.id);
+      }
+
+      updateNodeVisualState(currentNode.id);
+      saveDone();
+      updateProgress();
+      openModal(currentNode);
+    }
+
+    function closeModal() {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      setBackgroundInert(false);
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', onModalKeydown, true);
+      syncHash('');
+      if (lastFocusedEl && typeof lastFocusedEl.focus === 'function') {
+        lastFocusedEl.focus();
+      }
+    }
+
+    document.getElementById('roadmap').addEventListener('click', event => {
+      const target = event.target.closest('[data-node-id]');
+      if (!target) return;
+
+      const nodeData = nodeById.get(target.dataset.nodeId);
+      if (!nodeData) return;
+      openModal(nodeData, target);
+    });
+
+    modal.addEventListener('click', event => {
+      if (event.target.id === 'modal') closeModal();
+    });
+
+    document.getElementById('close-btn').addEventListener('click', closeModal);
+    document.getElementById('mark-btn').addEventListener('click', toggleDone);
+    document.getElementById('clear-btn').addEventListener('click', () => {
+      const shouldClear = window.confirm('Deseja remover todo o progresso salvo neste navegador?');
+      if (!shouldClear) return;
+      done.clear();
+      saveDone();
+      document.querySelectorAll('[data-node-id]').forEach(node => node.classList.remove('done'));
+      updateProgress();
+      showFeedback('Progresso limpo com sucesso.');
+    });
+
+    document.getElementById('share-btn').addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        showFeedback('Link copiado! Agora você pode abrir no PC ou celular.');
+      } catch {
+        const ok = window.prompt('Copie o link abaixo:', window.location.href);
+        showFeedback(ok === null ? 'Cópia cancelada.' : 'Link exibido para cópia manual.', ok === null);
+      }
+    });
+
+    searchInput.addEventListener('input', event => {
+      const query = event.target.value.trim().toLowerCase();
+      const nodes = document.querySelectorAll('[data-node-id]');
+      let visible = 0;
+
+      nodes.forEach(node => {
+        const match = query.length === 0 || node.dataset.search.includes(query);
+        node.style.display = match ? '' : 'none';
+        if (match) visible += 1;
+      });
+
+      if (query.length === 0) {
+        showFeedback('');
+      } else {
+        showFeedback(`${visible} tópico(s) encontrado(s).`, visible === 0);
+      }
+    });
+
+
+
+    document.getElementById('next-btn').addEventListener('click', () => {
+      const nextNode = allNodes.find(node => !done.has(node.id));
+      if (!nextNode) {
+        showFeedback('Parabéns! Todos os tópicos foram concluídos.');
+        return;
+      }
+      const trigger = document.querySelector(`[data-node-id="${nextNode.id}"]`);
+      openModal(nextNode, trigger || document.getElementById('next-btn'));
+    });
+
+    document.getElementById('export-btn').addEventListener('click', () => {
+      const payload = {
+        version: 1,
+        exportedAt: new Date().toISOString(),
+        done: [...done],
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'math-roadmap-progress.json';
+      link.click();
+      URL.revokeObjectURL(url);
+      showFeedback('Progresso exportado em JSON.');
+    });
+
+    const importFileInput = document.getElementById('import-file');
+    document.getElementById('import-btn').addEventListener('click', () => importFileInput.click());
+    importFileInput.addEventListener('change', async event => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      try {
+        const text = await file.text();
+        const data = JSON.parse(text);
+        const ids = Array.isArray(data) ? data : data.done;
+        if (!Array.isArray(ids)) throw new Error('Formato inválido');
+
+        const validIds = ids.filter(id => typeof id === 'string' && nodeById.has(id));
+        done.clear();
+        validIds.forEach(id => done.add(id));
+
+        document.querySelectorAll('[data-node-id]').forEach(node => {
+          node.classList.toggle('done', done.has(node.dataset.nodeId));
+        });
+
+        saveDone();
+        updateProgress();
+        showFeedback(`Importação concluída: ${validIds.length} tópicos carregados.`);
+      } catch {
+        showFeedback('Arquivo inválido para importação.', true);
+      } finally {
+        importFileInput.value = '';
+      }
+    });
+
+    window.addEventListener('hashchange', () => {
+      const id = window.location.hash.replace('#', '');
+      if (!id) {
+        if (modal.classList.contains('open')) closeModal();
+        return;
+      }
+      const nodeData = nodeById.get(id);
+      if (nodeData) {
+        const trigger = document.querySelector(`[data-node-id="${id}"]`);
+        openModal(nodeData, trigger || document.body);
+      }
+    });
+
+    buildRoadmap();
+
+    const hashId = window.location.hash.replace('#', '');
+    if (hashId && nodeById.has(hashId)) {
+      const trigger = document.querySelector(`[data-node-id="${hashId}"]`);
+      openModal(nodeById.get(hashId), trigger || document.body);
+    }
+  </script>
 </body>
 </html>
