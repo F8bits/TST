@@ -397,25 +397,25 @@
   <main class="roadmap" id="roadmap" aria-label="Roadmap de Matemática"></main>
 
   <div class="modal-overlay" id="modal" aria-hidden="true">
-    <div class="modal" id="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal" id="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-desc">
       <button class="close-btn" type="button" id="close-btn" aria-label="Fechar modal">✕</button>
       <div id="modal-icon" style="font-size:2rem;margin-bottom:8px" aria-hidden="true"></div>
       <h2 id="modal-title"></h2>
       <div class="modal-tags" id="modal-tags"></div>
       <div class="modal-tabs" role="tablist" aria-label="Conteúdo do tópico">
-        <button class="tab-btn active" data-tab="overview" role="tab" aria-selected="true">📖 Visão geral</button>
-        <button class="tab-btn" data-tab="resources" role="tab" aria-selected="false">🔗 Recursos</button>
-        <button class="tab-btn" data-tab="questions" role="tab" aria-selected="false">🎯 Questões</button>
+        <button class="tab-btn active" id="tabbtn-overview" data-tab="overview" role="tab" aria-selected="true" aria-controls="tab-overview" tabindex="0">📖 Visão geral</button>
+        <button class="tab-btn" id="tabbtn-resources" data-tab="resources" role="tab" aria-selected="false" aria-controls="tab-resources" tabindex="-1">🔗 Recursos</button>
+        <button class="tab-btn" id="tabbtn-questions" data-tab="questions" role="tab" aria-selected="false" aria-controls="tab-questions" tabindex="-1">🎯 Questões</button>
       </div>
       <div class="mbody" style="padding:16px 20px;overflow-y:auto;flex:1">
-        <section class="tab-panel active" id="tab-overview">
+        <section class="tab-panel active" id="tab-overview" role="tabpanel" aria-labelledby="tabbtn-overview">
           <p id="modal-desc"></p>
           <ul id="modal-topics"></ul>
         </section>
-        <section class="tab-panel" id="tab-resources">
+        <section class="tab-panel" id="tab-resources" role="tabpanel" aria-labelledby="tabbtn-resources">
           <div class="resource-list" id="modal-resources"></div>
         </section>
-        <section class="tab-panel" id="tab-questions">
+        <section class="tab-panel" id="tab-questions" role="tabpanel" aria-labelledby="tabbtn-questions">
           <div class="question-list" id="modal-questions"></div>
         </section>
       </div>
@@ -530,6 +530,7 @@
     const pageRoots = [document.querySelector('header'), document.querySelector('main')];
     const supportsInert = 'inert' in HTMLElement.prototype;
     let lastFocusedEl = null;
+    let previousBodyOverflow = '';
 
     function showFeedback(message, isError = false) {
       feedback.textContent = message;
@@ -657,8 +658,50 @@
       }
     }
 
+    function getActiveTab() {
+      return document.querySelector('.tab-btn.active')?.dataset.tab || 'overview';
+    }
+
+    function safeHttpUrl(rawUrl) {
+      try {
+        const url = new URL(rawUrl, location.origin);
+        if (url.protocol === 'http:' || url.protocol === 'https:') return url.href;
+      } catch {}
+      return null;
+    }
+
+    function renderResources(resources) {
+      const resourcesWrap = document.getElementById('modal-resources');
+      resourcesWrap.innerHTML = '';
+
+      resources.forEach(resource => {
+        const safeUrl = safeHttpUrl(resource.url);
+        if (!safeUrl) return;
+
+        const item = document.createElement('div');
+        item.className = 'resource-item';
+
+        const link = document.createElement('a');
+        link.href = safeUrl;
+        link.target = '_blank';
+        link.rel = 'noopener';
+        link.textContent = resource.name || resource.t || 'Recurso';
+
+        item.appendChild(link);
+        resourcesWrap.appendChild(item);
+      });
+
+      if (!resourcesWrap.children.length) {
+        const empty = document.createElement('div');
+        empty.className = 'resource-item';
+        empty.textContent = 'Sem recursos válidos para este tópico.';
+        resourcesWrap.appendChild(empty);
+      }
+    }
+
     function openModal(nodeData, triggerEl = null) {
       const wasOpen = modal.classList.contains('open');
+      const activeTab = wasOpen ? getActiveTab() : 'overview';
       currentNode = nodeData;
       document.getElementById('modal-icon').textContent = nodeData.icon;
       document.getElementById('modal-title').textContent = nodeData.title;
@@ -675,8 +718,7 @@
         { name: 'Professor Ferretto', url: 'https://www.youtube.com/@ProfessorFerretto' },
       ];
       const resources = nodeData.resources || defaultResources;
-      const resourcesWrap = document.getElementById('modal-resources');
-      resourcesWrap.innerHTML = resources.map(resource => `<div class="resource-item"><a href="${resource.url}" target="_blank" rel="noopener">${resource.name || resource.t || 'Recurso'}</a></div>`).join('');
+      renderResources(resources);
 
       const questions = nodeData.questions || [
         { q: `Explique com suas palavras o tópico ${nodeData.title}.`, a: 'Resposta pessoal.' },
@@ -695,11 +737,12 @@
         modal.classList.add('open');
         modal.setAttribute('aria-hidden', 'false');
         setBackgroundInert(true);
+        previousBodyOverflow = document.body.style.overflow;
         document.body.style.overflow = 'hidden';
         document.addEventListener('keydown', onModalKeydown, true);
       }
       syncHash(nodeData.id);
-      switchTab('overview');
+      switchTab(activeTab, false);
       btn.focus();
     }
 
@@ -730,7 +773,7 @@
       modal.classList.remove('open');
       modal.setAttribute('aria-hidden', 'true');
       setBackgroundInert(false);
-      document.body.style.overflow = '';
+      document.body.style.overflow = previousBodyOverflow;
       document.removeEventListener('keydown', onModalKeydown, true);
       syncHash('');
       if (lastFocusedEl && typeof lastFocusedEl.focus === 'function') {
@@ -758,7 +801,7 @@
       if (!shouldClear) return;
       done.clear();
       saveDone();
-      document.querySelectorAll('[data-node-id]').forEach(node => node.classList.remove('done'));
+      document.querySelectorAll('[data-node-id]').forEach(node => updateNodeVisualState(node.dataset.nodeId));
       updateProgress();
       showFeedback('Progresso limpo com sucesso.');
     });
@@ -840,7 +883,7 @@
         validIds.forEach(id => done.add(id));
 
         document.querySelectorAll('[data-node-id]').forEach(node => {
-          node.classList.toggle('done', done.has(node.dataset.nodeId));
+          updateNodeVisualState(node.dataset.nodeId);
         });
 
         saveDone();
@@ -855,12 +898,16 @@
 
     // Nota: hashchange não dispara quando usamos history.replaceState/pushState.
 
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab-btn').forEach(tab => {
+    function switchTab(tabId, focus = true) {
+      const tabs = [...document.querySelectorAll('.tab-btn')];
+      tabs.forEach(tab => {
         const active = tab.dataset.tab === tabId;
         tab.classList.toggle('active', active);
         tab.setAttribute('aria-selected', active ? 'true' : 'false');
+        tab.tabIndex = active ? 0 : -1;
+        if (active && focus) tab.focus();
       });
+
       document.querySelectorAll('.tab-panel').forEach(panel => {
         panel.classList.toggle('active', panel.id === `tab-${tabId}`);
       });
@@ -868,6 +915,22 @@
 
     document.querySelectorAll('.tab-btn').forEach(tab => {
       tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+    });
+
+    document.querySelector('.modal-tabs').addEventListener('keydown', event => {
+      const tabs = [...document.querySelectorAll('.tab-btn')];
+      const currentIndex = tabs.indexOf(document.activeElement);
+      if (currentIndex < 0) return;
+
+      let nextIndex = null;
+      if (event.key === 'ArrowRight') nextIndex = (currentIndex + 1) % tabs.length;
+      if (event.key === 'ArrowLeft') nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+      if (event.key === 'Home') nextIndex = 0;
+      if (event.key === 'End') nextIndex = tabs.length - 1;
+
+      if (nextIndex === null) return;
+      event.preventDefault();
+      switchTab(tabs[nextIndex].dataset.tab);
     });
 
     window.addEventListener('hashchange', () => {
