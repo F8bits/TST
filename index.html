@@ -262,6 +262,94 @@
     .modal .mark-btn:hover { background: #c4b5fd; }
     .modal .mark-btn.undone { background: #1e1e3a; color: #94a3b8; }
 
+    :root {
+      --bg: #0a0e1a;
+      --panel: #131a2c;
+      --line: rgba(123, 162, 255, 0.08);
+    }
+
+    body {
+      background: var(--bg);
+      background-image:
+        linear-gradient(var(--line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line) 1px, transparent 1px);
+      background-size: 34px 34px;
+    }
+
+    .subtitle {
+      font-size: .72rem;
+      color: #8fa3c7;
+      margin-top: 8px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .bg-locked header,
+    .bg-locked main {
+      pointer-events: none;
+    }
+
+    .modal {
+      max-width: 620px;
+      max-height: 88vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background: #0f1628;
+      border-color: #2a3553;
+    }
+
+    .modal-tabs {
+      display: flex;
+      gap: 6px;
+      border-bottom: 1px solid #2a3553;
+      padding: 0 20px;
+      margin-top: 8px;
+    }
+
+    .tab-btn {
+      border: none;
+      background: none;
+      color: #8fa3c7;
+      font-size: .74rem;
+      padding: 10px 8px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      font-weight: 700;
+    }
+
+    .tab-btn.active {
+      color: #e2e8f0;
+      border-bottom-color: #a78bfa;
+    }
+
+    .tab-panel {
+      display: none;
+      overflow-y: auto;
+      padding-right: 2px;
+    }
+
+    .tab-panel.active { display: block; }
+
+    .resource-list,
+    .question-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .resource-item,
+    .question-item {
+      border: 1px solid #2a3553;
+      background: #141c30;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: .82rem;
+      color: #cbd5e1;
+    }
+
+    .resource-item a { color: #93c5fd; }
+    .question-item summary { cursor: pointer; font-weight: 700; }
 
 
     @media (prefers-reduced-motion: reduce) {
@@ -287,6 +375,7 @@
   <header>
     <h1>🧮 Roadmap de Matemática</h1>
     <p>Do zero absoluto até a matemática universitária avançada. Clique em qualquer tópico para aprender mais.</p>
+    <p class="subtitle">modo estudo + recursos + questões</p>
     <div class="progress-bar-wrap" role="progressbar" aria-label="Progresso de tópicos concluídos" aria-valuemin="0" aria-valuemax="35" aria-valuenow="0">
       <div class="progress-bar" id="pbar"></div>
     </div>
@@ -313,8 +402,23 @@
       <div id="modal-icon" style="font-size:2rem;margin-bottom:8px" aria-hidden="true"></div>
       <h2 id="modal-title"></h2>
       <div class="modal-tags" id="modal-tags"></div>
-      <p id="modal-desc"></p>
-      <ul id="modal-topics"></ul>
+      <div class="modal-tabs" role="tablist" aria-label="Conteúdo do tópico">
+        <button class="tab-btn active" data-tab="overview" role="tab" aria-selected="true">📖 Visão geral</button>
+        <button class="tab-btn" data-tab="resources" role="tab" aria-selected="false">🔗 Recursos</button>
+        <button class="tab-btn" data-tab="questions" role="tab" aria-selected="false">🎯 Questões</button>
+      </div>
+      <div class="mbody" style="padding:16px 20px;overflow-y:auto;flex:1">
+        <section class="tab-panel active" id="tab-overview">
+          <p id="modal-desc"></p>
+          <ul id="modal-topics"></ul>
+        </section>
+        <section class="tab-panel" id="tab-resources">
+          <div class="resource-list" id="modal-resources"></div>
+        </section>
+        <section class="tab-panel" id="tab-questions">
+          <div class="question-list" id="modal-questions"></div>
+        </section>
+      </div>
       <button class="mark-btn" id="mark-btn" type="button"></button>
     </div>
   </div>
@@ -424,6 +528,7 @@
     const feedback = document.getElementById('feedback');
     const searchInput = document.getElementById('search-input');
     const pageRoots = [document.querySelector('header'), document.querySelector('main')];
+    const supportsInert = 'inert' in HTMLElement.prototype;
     let lastFocusedEl = null;
 
     function showFeedback(message, isError = false) {
@@ -477,6 +582,8 @@
           node.type = 'button';
           node.dataset.nodeId = nodeData.id;
           node.setAttribute('aria-label', `${nodeData.title} - ${nodeData.sub}`);
+          node.setAttribute('aria-controls', 'modal-box');
+          node.setAttribute('aria-pressed', done.has(nodeData.id) ? 'true' : 'false');
           node.dataset.search = `${nodeData.title} ${nodeData.sub} ${nodeData.desc} ${nodeData.topics.join(' ')}`.toLowerCase();
           node.innerHTML = `<div class="node-icon">${nodeData.icon}</div><div class="node-title">${nodeData.title}</div><div class="node-sub">${nodeData.sub}</div>`;
           row.appendChild(node);
@@ -507,9 +614,15 @@
     function setBackgroundInert(isOpen) {
       pageRoots.forEach(root => {
         if (!root) return;
-        if (isOpen) root.setAttribute('inert', '');
-        else root.removeAttribute('inert');
+        if (supportsInert) {
+          if (isOpen) root.setAttribute('inert', '');
+          else root.removeAttribute('inert');
+        } else {
+          if (isOpen) root.setAttribute('aria-hidden', 'true');
+          else root.removeAttribute('aria-hidden');
+        }
       });
+      document.body.classList.toggle('bg-locked', isOpen && !supportsInert);
     }
 
     function syncHash(nodeId) {
@@ -545,6 +658,7 @@
     }
 
     function openModal(nodeData, triggerEl = null) {
+      const wasOpen = modal.classList.contains('open');
       currentNode = nodeData;
       document.getElementById('modal-icon').textContent = nodeData.icon;
       document.getElementById('modal-title').textContent = nodeData.title;
@@ -556,25 +670,45 @@
       const ul = document.getElementById('modal-topics');
       ul.innerHTML = nodeData.topics.map(topic => `<li>${topic}</li>`).join('');
 
+      const defaultResources = [
+        { name: 'Khan Academy', url: 'https://pt.khanacademy.org/' },
+        { name: 'Professor Ferretto', url: 'https://www.youtube.com/@ProfessorFerretto' },
+      ];
+      const resources = nodeData.resources || defaultResources;
+      const resourcesWrap = document.getElementById('modal-resources');
+      resourcesWrap.innerHTML = resources.map(resource => `<div class="resource-item"><a href="${resource.url}" target="_blank" rel="noopener">${resource.name || resource.t || 'Recurso'}</a></div>`).join('');
+
+      const questions = nodeData.questions || [
+        { q: `Explique com suas palavras o tópico ${nodeData.title}.`, a: 'Resposta pessoal.' },
+        { q: `Dê um exemplo prático de ${nodeData.title}.`, a: 'Resposta pessoal.' },
+      ];
+      const questionsWrap = document.getElementById('modal-questions');
+      questionsWrap.innerHTML = questions.map((q, idx) => `<details class="question-item"><summary>${idx + 1}. ${q.q}</summary><p style="margin-top:8px">${q.a || 'Sem resposta cadastrada.'}</p></details>`).join('');
+
       const btn = document.getElementById('mark-btn');
       const isDone = done.has(nodeData.id);
       btn.textContent = isDone ? '↩ Marcar como não concluído' : '✓ Marcar como concluído';
       btn.className = `mark-btn${isDone ? ' undone' : ''}`;
 
-      lastFocusedEl = triggerEl || document.activeElement;
-      modal.classList.add('open');
-      modal.setAttribute('aria-hidden', 'false');
-      setBackgroundInert(true);
-      document.body.style.overflow = 'hidden';
-      document.addEventListener('keydown', onModalKeydown, true);
+      if (!wasOpen) {
+        lastFocusedEl = triggerEl || document.activeElement;
+        modal.classList.add('open');
+        modal.setAttribute('aria-hidden', 'false');
+        setBackgroundInert(true);
+        document.body.style.overflow = 'hidden';
+        document.addEventListener('keydown', onModalKeydown, true);
+      }
       syncHash(nodeData.id);
+      switchTab('overview');
       btn.focus();
     }
 
     function updateNodeVisualState(nodeId) {
       const button = document.querySelector(`[data-node-id="${nodeId}"]`);
       if (!button) return;
-      button.classList.toggle('done', done.has(nodeId));
+      const isDone = done.has(nodeId);
+      button.classList.toggle('done', isDone);
+      button.setAttribute('aria-pressed', isDone ? 'true' : 'false');
     }
 
     function toggleDone() {
@@ -666,6 +800,10 @@
         return;
       }
       const trigger = document.querySelector(`[data-node-id="${nextNode.id}"]`);
+      if (trigger) {
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        trigger.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' });
+      }
       openModal(nextNode, trigger || document.getElementById('next-btn'));
     });
 
@@ -681,7 +819,7 @@
       link.href = url;
       link.download = 'math-roadmap-progress.json';
       link.click();
-      URL.revokeObjectURL(url);
+      window.setTimeout(() => URL.revokeObjectURL(url), 1000);
       showFeedback('Progresso exportado em JSON.');
     });
 
@@ -713,6 +851,23 @@
       } finally {
         importFileInput.value = '';
       }
+    });
+
+    // Nota: hashchange não dispara quando usamos history.replaceState/pushState.
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(tab => {
+        const active = tab.dataset.tab === tabId;
+        tab.classList.toggle('active', active);
+        tab.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+      document.querySelectorAll('.tab-panel').forEach(panel => {
+        panel.classList.toggle('active', panel.id === `tab-${tabId}`);
+      });
+    }
+
+    document.querySelectorAll('.tab-btn').forEach(tab => {
+      tab.addEventListener('click', () => switchTab(tab.dataset.tab));
     });
 
     window.addEventListener('hashchange', () => {
