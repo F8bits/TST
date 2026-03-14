@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Tracker Pro MAX - Cloud</title>
+    
+    <!-- CSP restrito mas abrangente para Firestore WebSockets v10 -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://www.gstatic.com; style-src 'self' 'unsafe-inline'; media-src 'self' https://assets.mixkit.co; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com wss://*.firebaseio.com;">
+
+    <!-- Plugins Gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.11/locales/pt-br.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="gamification-bar">
+        <div class="meta-container">
+            <strong>Meta Diária (2h):</strong>
+            <div class="meta-track"><div class="meta-fill" id="progresso-diario"></div></div>
+            <span id="txt-meta-diaria" style="min-width: 80px; text-align: right; font-weight: bold;">0 / 120 min</span>
+        </div>
+        <div class="ofensiva-badge">
+            <span style="font-size: 1.2rem;">🔥</span> Ofensiva: <span id="txt-ofensiva">0 dias</span>
+        </div>
+    </div>
+
+    <div class="workspace">
+        <div class="header-nav">
+            <div class="logo-title">StudyTracker Cloud</div>
+            <div class="aba ativa" onclick="mudarAba('dashboard')">Acompanhamento</div>
+            <div class="aba" onclick="mudarAba('materias')">Matérias</div>
+            <div class="aba" onclick="mudarAba('calendario')">Calendário</div>
+            <div class="aba" onclick="mudarAba('historico')">Histórico</div>
+            <div class="aba" onclick="fazerLogout()" style="color: var(--cor-perigo); font-weight: normal; margin-left: auto;">Sair da Conta</div>
+        </div>
+
+        <div id="aba-dashboard" class="conteudo-aba ativa">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px;">
+                <div>
+                    <h1>Progresso de Estudos</h1>
+                    <p class="subtitle" style="margin-bottom: 0;">Análise do tempo dedicado a cada disciplina.</p>
+                </div>
+                <div class="filtros-grafico">
+                    <button class="btn-secundario btn-filtro" id="filtro-semana" onclick="setFiltroGrafico('semana')">Esta Semana</button>
+                    <button class="btn-secundario btn-filtro" id="filtro-mes" onclick="setFiltroGrafico('mes')">Este Mês</button>
+                    <button class="btn-secundario btn-filtro ativo" id="filtro-total" onclick="setFiltroGrafico('total')">Total</button>
+                </div>
+            </div>
+            <div class="grid-cards">
+                <div class="card"><canvas id="graficoBarra"></canvas></div>
+                <div class="card" style="display: flex; flex-direction: column; align-items: center;">
+                    <h3 style="align-self: flex-start;">Distribuição de Foco</h3>
+                    <div style="width: 300px; height: 300px;"><canvas id="graficoPizza"></canvas></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="aba-materias" class="conteudo-aba">
+            <h1>Minhas Matérias</h1>
+            <p class="subtitle">Sincronizadas com sua NUVEM pessoal.</p>
+            <div class="form-materia">
+                <input type="color" id="nova-materia-cor" value="#2563eb" style="width: 50px; height: 50px; padding: 2px; cursor: pointer;">
+                <input type="text" id="nova-materia-nome" placeholder="Nova Disciplina" style="flex-grow: 1;" autocomplete="off">
+                <button onclick="adicionarMateria()">Salvar na Nuvem</button>
+            </div>
+            <div class="grid-materias" id="container-materias"></div>
+        </div>
+
+        <div id="aba-calendario" class="conteudo-aba"><div id="calendar"></div></div>
+
+        <div id="aba-historico" class="conteudo-aba">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div><h1>Histórico de Sessões</h1></div>
+                <button class="btn-sucesso" onclick="exportarCSV()">📥 Exportar para CSV</button>
+            </div>
+            <div id="container-historico" style="margin-top: 20px;"></div>
+        </div>
+    </div>
+
+    <div class="global-timer-bar">
+        <div class="timer-config">
+            <span style="font-size: 0.9rem;">Pomodoro</span>
+            <label class="switch"><input type="checkbox" id="check-pomodoro" onchange="alternarModoTimer()"><span class="slider"></span></label>
+        </div>
+        <div class="timer-inputs">
+            <select id="select-materia"><option value="" disabled selected>Carregando da Nuvem...</option></select>
+            <input type="text" id="input-assunto" placeholder="O que você vai estudar agora?" autocomplete="off">
+        </div>
+        <div class="timer-controls">
+            <div class="display-cronometro" id="display-tempo">00:00:00</div>
+            <button id="btn-iniciar" class="btn-sucesso" onclick="iniciarSessao()" style="width: 110px;">▶ Iniciar</button>
+            <button id="btn-pausar" class="btn-aviso" onclick="pausarSessao()" style="display: none; width: 110px;">⏸ Pausar</button>
+            <button id="btn-parar" class="btn-perigo" onclick="pararSessao()" style="display: none; width: 110px;">⏹ Parar</button>
+        </div>
+    </div>
+    <audio id="som-alarme" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
+
+    <!-- Usando Module para habilitar chamadas ES6 -->
+    <script type="module" src="renderer.js"></script>
+</body>
+</html>

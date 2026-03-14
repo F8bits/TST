@@ -1,0 +1,48 @@
+{
+  "name": "rastreador-de-estudos",
+  "version": "1.0.0",
+  "description": "Seu rastreador pessoal de foco e produtividade escolar/acadêmica.",
+  "author": "Felyp",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder build --win",
+    "release": "electron-builder build --win -p always"
+  },
+  "build": {
+    "appId": "com.felyp.studytracker",
+    "productName": "Study Tracker Pro",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "**/*",
+      "!node_modules//.md",
+      "!**/.map"
+    ],
+    "win": {
+      "target": "nsis",
+      "verifyUpdateCodeSignature": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "F8bits",
+      "repo": "TST"
+    }
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "electron-updater": "^6.8.3",
+    "firebase": "^12.10.0"
+  },
+  "devDependencies": {
+    "electron": "^34.0.0",
+    "electron-builder": "^25.1.8"
+  }
+}

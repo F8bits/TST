@@ -1,0 +1,170 @@
+        /* Design System: Clean Study Pro */
+        :root { 
+            --cor-fundo: #ffffff; 
+            --cor-painel: #f8fafc; 
+            --cor-borda: #e2e8f0;
+            --cor-primaria: #2563eb; 
+            --cor-primaria-hover: #1d4ed8;
+            --cor-texto: #0f172a; 
+            --cor-texto-secundario: #64748b; 
+            --cor-sucesso: #10b981; 
+            --cor-perigo: #ef4444; 
+            --cor-aviso: #f59e0b;
+        }
+        
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: var(--cor-fundo); 
+            color: var(--cor-texto); 
+            margin: 0; 
+            display: flex; 
+            flex-direction: column;
+            height: 100vh; 
+            overflow: hidden;
+        }
+
+        /* BARRA GAMIFICAÇÃO (TOPO) */
+        .gamification-bar {
+            background-color: var(--cor-painel);
+            border-bottom: 1px solid var(--cor-borda);
+            padding: 10px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.95rem;
+            color: var(--cor-texto-secundario);
+        }
+
+        .meta-container {
+            flex-grow: 1;
+            margin-right: 40px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .meta-track {
+            flex-grow: 1;
+            height: 12px;
+            background-color: var(--cor-borda);
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .meta-fill {
+            height: 100%;
+            background-color: var(--cor-sucesso);
+            width: 0%;
+            transition: width 0.5s ease-out;
+        }
+
+        .ofensiva-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+            color: #ea580c;
+            background: #ffedd5;
+            padding: 6px 15px;
+            border-radius: 20px;
+        }
+
+        .workspace { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; }
+        
+        .header-nav { display: flex; border-bottom: 1px solid var(--cor-borda); padding: 0 40px; align-items: center; }
+        .logo-title { font-weight: 800; font-size: 1.2rem; margin-right: 40px; color: var(--cor-primaria); }
+        .aba { padding: 20px 25px; cursor: pointer; color: var(--cor-texto-secundario); font-weight: 600; border-bottom: 3px solid transparent; transition: 0.2s;}
+        .aba:hover { color: var(--cor-texto); }
+        .aba.ativa { color: var(--cor-primaria); border-bottom-color: var(--cor-primaria); }
+
+        .conteudo-aba { flex-grow: 1; padding: 40px; overflow-y: auto; display: none; background-color: var(--cor-fundo);}
+        .conteudo-aba.ativa { display: block; }
+
+        h1 { margin-top: 0; font-size: 1.8rem; margin-bottom: 5px;}
+        p.subtitle { color: var(--cor-texto-secundario); margin-top: 0; margin-bottom: 30px;}
+        
+        input, select { padding: 12px; border-radius: 6px; border: 1px solid var(--cor-borda); background: #fff; color: var(--cor-texto); font-size: 1rem; outline: none; }
+        input:focus, select:focus { border-color: var(--cor-primaria); }
+        
+        button { padding: 12px 20px; border: none; border-radius: 6px; background-color: var(--cor-primaria); color: white; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        button:hover { background-color: var(--cor-primaria-hover); }
+        button.btn-sucesso { background-color: var(--cor-sucesso); color: white;}
+        button.btn-perigo { background-color: var(--cor-perigo); color: white;}
+        button.btn-aviso { background-color: var(--cor-aviso); color: white;}
+        button.btn-secundario { background-color: var(--cor-painel); color: var(--cor-texto-secundario); border: 1px solid var(--cor-borda);}
+
+        /* Gráficos / Filtros */
+        .filtros-grafico { display: flex; gap: 10px; margin-bottom: 20px; }
+        .btn-filtro { padding: 8px 15px; font-size: 0.9rem; border-radius: 20px; }
+        .btn-filtro.ativo { background-color: var(--cor-primaria); color: white; border-color: var(--cor-primaria);}
+
+        .grid-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .card { background-color: #fff; padding: 25px; border-radius: 12px; border: 1px solid var(--cor-borda); box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .card h3 { margin-top: 0; margin-bottom: 20px; color: var(--cor-texto-secundario); font-size: 1rem; }
+
+        /* Matérias */
+        .form-materia { display: flex; gap: 10px; margin-bottom: 30px; align-items: center; background: var(--cor-painel); padding: 20px; border-radius: 8px; border: 1px solid var(--cor-borda);}
+        .grid-materias { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
+        .materia-item { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 15px 20px; border-radius: 8px; border: 1px solid var(--cor-borda); border-left: 6px solid; }
+
+        /* Histórico */
+        .sessao-item { display: flex; justify-content: space-between; align-items: center; background: var(--cor-painel); padding: 15px 20px; margin-bottom: 12px; border-radius: 8px; border: 1px solid var(--cor-borda); }
+        .sessao-dados { display: flex; flex-direction: column; gap: 4px; }
+        .badge { padding: 4px 10px; border-radius: 20px; font-weight: bold; font-size: 0.8rem; color: white;}
+
+        /* Calendário */
+        #calendar { height: 100%; width: 100%; background-color: #fff; padding: 20px; border-radius: 12px; border: 1px solid var(--cor-borda);}
+        .fc-theme-standard td, .fc-theme-standard th { border-color: var(--cor-borda) !important; }
+        .fc-col-header-cell { padding: 10px 0 !important; background-color: var(--cor-painel); }
+        .fc-daygrid-day-number { color: var(--cor-texto); padding: 8px !important; text-decoration: none;}
+        .fc-day-today { background-color: #eff6ff !important; }
+        .fc-button-primary { background-color: var(--cor-primaria) !important; border-color: var(--cor-primaria) !important; text-transform: capitalize;}
+        .fc-event { cursor: default; padding: 3px 5px; border-radius: 4px; font-weight: bold; border: none;}
+
+        /* BARRA DE TIMER GLOBAL */
+        .global-timer-bar {
+            background-color: #fff;
+            border-top: 1px solid var(--cor-borda);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 40px;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.03);
+            z-index: 100;
+            gap: 20px;
+        }
+
+        .timer-config {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: var(--cor-painel);
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 1px solid var(--cor-borda);
+            font-weight: 600;
+        }
+
+        /* Checkbox Switch UI */
+        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .4s; border-radius: 24px; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--cor-sucesso); }
+        input:checked + .slider:before { transform: translateX(20px); }
+
+        .timer-inputs { display: flex; gap: 10px; align-items: center; flex-grow: 1; }
+        .timer-inputs select { width: 180px; }
+        .timer-inputs input { flex-grow: 1; }
+
+        .timer-controls { display: flex; align-items: center; gap: 15px; }
+        .display-cronometro { font-size: 2.2rem; font-weight: bold; font-variant-numeric: tabular-nums; color: var(--cor-texto); min-width: 130px; text-align: center; }
+
+        .pulsar { animation: piscar 2s infinite; }
+        @keyframes piscar {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; color: var(--cor-sucesso);}
+            100% { opacity: 1; }
+        }
+        .pausado-text { color: var(--cor-aviso) !important;}

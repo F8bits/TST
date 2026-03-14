@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Tracker Pro MAX - Login</title>
+    
+    <!-- CSP: Permite navegação aos servidores do Firebase -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com; style-src 'self' 'unsafe-inline'; connect-src 'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com;">
+
+    <link rel="stylesheet" href="styles.css"> 
+    <style>
+        body { display: flex; justify-content: center; align-items: center; background-color: var(--cor-painel); height: 100vh; }
+        .login-box { background-color: var(--cor-fundo); padding: 50px 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); width: 100%; max-width: 400px; border: 1px solid var(--cor-borda); text-align: center; }
+        .login-logo { font-weight: 800; font-size: 1.8rem; color: var(--cor-primaria); margin-bottom: 5px; }
+        .login-subtitle { color: var(--cor-texto-secundario); margin-bottom: 30px; font-size: 0.95rem; }
+        .input-group { display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px; }
+        .input-group input { width: 100%; box-sizing: border-box; padding: 14px; }
+        .btn-full { width: 100%; padding: 14px; font-size: 1.05rem; margin-bottom: 15px; }
+        .toggle-link { color: var(--cor-primaria); cursor: pointer; font-weight: 600; font-size: 0.9rem; text-decoration: underline; }
+        #erro-msg { color: var(--cor-perigo); font-size: 0.85rem; margin-top: -15px; margin-bottom: 15px; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+
+    <div class="login-box">
+        <div class="login-logo">📚 StudyTracker</div>
+        <div class="login-subtitle">Acesso Sincronizado na Nuvem</div>
+
+        <h2 id="titulo-form" style="font-size: 1.3rem; margin-bottom: 20px;">Entrar na Conta</h2>
+
+        <div class="input-group">
+            <input type="email" id="input-email" placeholder="Seu e-mail" autocomplete="email">
+            <input type="password" id="input-senha" placeholder="Sua senha secreta" autocomplete="current-password">
+        </div>
+
+        <div id="erro-msg">E-mail ou senha incorretos.</div>
+
+        <button id="btn-acao-principal" class="btn-full">Entrar no Dashboard</button>
+        
+        <div class="toggle-link" id="btn-toggle">Ainda não tem conta? Crie aqui de graça!</div>
+    </div>
+
+    <!-- Módulo de Autenticação do Firebase -->
+    <script type="module">
+        import { auth } from './firebase-config.js';
+        import { 
+            createUserWithEmailAndPassword, 
+            signInWithEmailAndPassword, 
+            onAuthStateChanged 
+        } from 'https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js';
+
+        let isModoLogin = true;
+
+        // Escuta se o usuário já tem login salvo offline e pula a tela
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                window.api.navegarParaApp();
+            }
+        });
+
+        document.getElementById('btn-toggle').addEventListener('click', () => {
+            isModoLogin = !isModoLogin;
+            const titulo = document.getElementById('titulo-form');
+            const btnPrincipal = document.getElementById('btn-acao-principal');
+            const linkAbaixo = document.getElementById('btn-toggle');
+            document.getElementById('erro-msg').style.display = 'none'; 
+
+            if (isModoLogin) {
+                titulo.innerText = "Entrar na Conta";
+                btnPrincipal.innerText = "Entrar no Dashboard";
+                linkAbaixo.innerText = "Ainda não tem conta? Crie aqui de graça!";
+            } else {
+                titulo.innerText = "Criar Nova Conta";
+                btnPrincipal.innerText = "Registrar e Sincronizar";
+                linkAbaixo.innerText = "Já tem uma conta? Voltar ao Login.";
+            }
+        });
+
+        document.getElementById('btn-acao-principal').addEventListener('click', async () => {
+            const email = document.getElementById('input-email').value;
+            const senha = document.getElementById('input-senha').value;
+            const btn = document.getElementById('btn-acao-principal');
+            const erroEl = document.getElementById('erro-msg');
+            
+            if(!email || !senha) {
+                erroEl.innerText = "Preencha e-mail e senha.";
+                erroEl.style.display = 'block';
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerText = "Autenticando...";
+            erroEl.style.display = 'none';
+
+            try {
+                if (isModoLogin) {
+                    await signInWithEmailAndPassword(auth, email, senha);
+                } else {
+                    await createUserWithEmailAndPassword(auth, email, senha);
+                }
+                // onAuthStateChanged mandará para a Index
+            } catch (error) {
+                console.error(error);
+                erroEl.innerText = error.message; // Exibe a mensagem nativa de erro
+                erroEl.style.display = 'block';
+                btn.disabled = false;
+                btn.innerText = isModoLogin ? "Entrar no Dashboard" : "Registrar e Sincronizar";
+            }
+        });
+    </script>
+</body>
+</html>
